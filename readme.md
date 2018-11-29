@@ -19,11 +19,13 @@ Javascript and HTML Canvas
 ## Implementation Timeline
 
 **Day 1**
-  Implement basic typing and moving functionality
+  Figure out how to get the elements I want on the screen, such as the typing form, zombies, player character, and health.  
+  Set up a very basic outline of what I want the game to be.
 
 **Day 2**
-  Work out game logic
+  Hopefully, get zombies to move across the screen with the words attached to them.  
+  Figure out how to get them to die when the correct word is typed.  
+  Get health to go down when zombies reach the player character.
 
 **Day 3**
-  Flesh out art, music, bugs
-
+  Get artwork, music, and other assets into my project. Work out any bugs that might still exist or pop up.
