@@ -21,3 +21,9 @@
   font-size: 24px;
   text-align: center;
 }
+
+@font-face {
+  font-family: "Creepster";
+  font-family: "Roboto Slab";
+  src: url("https://fonts.googleapis.com/css?family=Creepster|Roboto+Slab:700");
+}

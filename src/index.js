@@ -1,40 +1,45 @@
-import { drawZombie, drawText } from "./zombie.js";
+import Zombie from "./zombie";
 import { drawPlayer } from "./player";
+import { randomWord } from "./dictionary";
 
-const words = ["hello", "word"];
 
 document.addEventListener('DOMContentLoaded', () => {
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
   const input = document.getElementById('typing-form');
   
+  let zombies = {};
   let x = -100;
-  let y = canvas.height / 2 - 70;
-  let dx = 7;
-  let zombieAlive = true;
+  let y = canvas.height / 2;
+  let dx = .7;
   let health = 100;
-  let shift = 0;
-  const frameWidth = 100;
-  let totalFrames = 12;
-  let currentFrame = 0;
-
-  function draw () {
+  let zombieCount = 0;
+  let counter = 0;
+  const background = new Image();
+  
+  function renderGame() {
+    background.src = "http://www.samskirrow.com/background.png";
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    if (zombieAlive === true) {
-      drawZombie(ctx, "hello", x, y, shift)
+    let randomSpawn = Math.floor(Math.random() * 150) + 50;
+    if (counter % randomSpawn === 0) {
+      zombies[`zombie${zombieCount}`] = new Zombie(ctx, randomWord(), x, Math.floor(Math.random() * y) + 100);
+      zombieCount += 1;
     }
-    if (x < canvas.width - 200) {
-      x+=dx;
-      shift+=frameWidth + 1
-      currentFrame += 1
-      if (currentFrame === totalFrames) {
-        shift = 0;
-        currentFrame = 0;
+    for (let zomb in zombies) {
+      let {x, y, word} = zombies[zomb];
+      zombies[zomb].draw()
+      if (x < canvas.width - 200) {
+        zombies[zomb].x+=dx;
+      } else if (health > 0 && Object.keys(zombies).length) {
+        health -= .3
+        console.log(health)
       }
-    } else if (health > 0) {
-      health -= .5
-      console.log(health)
     }
+    for (let zomb in zombies) {
+      zombies[zomb].drawText()
+    }
+    counter += 1;
+    console.log(counter)
 
     if (health > 0) {
       drawPlayer(ctx);
@@ -43,19 +48,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
   input.addEventListener('keyup', handleZombie)
   function handleZombie (e) {
-    if (e.keyCode === 13 && words.includes(input.value)) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      console.log(input.value);
-      input.value = "";
-      zombieAlive = false;
-      drawPlayer(ctx);
-    } else if (e.keycode === 13) {
+    if (e.keyCode === 13) {
+      for (let zomb in zombies) {
+        if (input.value === zombies[zomb].word) {
+          delete zombies[zomb];
+        }
+      }
       console.log(input.value);
       input.value = "";
     } else {
       null
     }
   }
-  
-  setInterval(draw, 80);
+
+  if (canvas.className === "game-screen") {
+    setInterval(renderGame, 10);
+  } else {
+
+  }
+  // setInterval(renderZombies, 1000);
 })
