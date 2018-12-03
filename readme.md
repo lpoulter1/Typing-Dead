@@ -8,7 +8,7 @@ Typing Dead is a typing game where waves of zombies spawn in from the left and h
  - Players will be able to type to kill zombies
  - Zombies should continuously spawn until the round ends or until the player loses
 
- ## Wireframes
+## Wireframes
 
 ![wireframe](https://i.imgur.com/dTvwb07.png)
 
