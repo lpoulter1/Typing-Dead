@@ -7,11 +7,18 @@
   top: 52%;
   left: 50%;
   transform: translate(-50%, -50%);
+  background: url("https://portfoliodev.files.wordpress.com/2010/05/broken-city.jpg");
+  background-position-x: right;
+  background-size: cover;
 }
 
 #typing-form {
+  font-family: "Roboto Slab";
+  background: transparent;
+  color: white;
   position: absolute;
-  border: 3px solid blue;
+  border: 0px solid blue;
+  outline: none;
   left: 50%;
   bottom: 0;
   transform: translate(-50%, -50%);
@@ -25,5 +32,5 @@
 @font-face {
   font-family: "Creepster";
   font-family: "Roboto Slab";
-  src: url("https://fonts.googleapis.com/css?family=Creepster|Roboto+Slab:700");
+  src: url("https://fonts.googleapis.com/css?family=Creepster|Roboto+Slab");
 }
