@@ -23,15 +23,24 @@ document.addEventListener('DOMContentLoaded', () => {
   function spawnZombies() {
     let x = -100;
     let y = Math.floor(Math.random() * (canvas.height-150)) + 50;
-    let randomSpawn = Math.floor(Math.random() * 5) + (31 - round);
+    let randomSpawn = Math.floor(Math.random() * 5) + (30 - round);
 
     for (let zomb in zombies) {
       if (zombies[zomb].x <= 150) {
-        if (y < zombies[zomb].y + 100 && y > zombies[zomb].y - 100) {
+        while (y < zombies[zomb].y + 100 && y > zombies[zomb].y - 100) {
           y = Math.floor(Math.random() * (canvas.height-150)) + 50;
         }
       }
     }
+
+    // if (Object.values(zombies).length > 0) {
+    //   let lastZombie = Object.values(zombies)[Object.values(zombies).length - 1]
+    //   if (lastZombie.x <= 150) {
+    //     while (y < lastZombie.y + 100 && y > lastZombie.y - 100) {
+    //       y = Math.floor(Math.random() * (canvas.height - 150)) + 50;
+    //     }
+    //   }
+    // }
 
     if (counter % randomSpawn === 0) {
       zombies[`zombie${zombieCount}`] = new Zombie(ctx, randomWord(), x, y, shift, deadShift, alive);
