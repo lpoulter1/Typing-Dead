@@ -7,14 +7,14 @@
   top: 52%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: url("https://portfoliodev.files.wordpress.com/2010/05/broken-city.jpg");
+  background: url("https://i.pinimg.com/originals/3c/cd/3b/3ccd3b907039adfdd93f643d4fbdbf97.png");
   background-position-x: right;
   background-size: cover;
 }
 
 #typing-form {
   font-family: "Roboto Slab";
-  background: transparent;
+  background-color: rgba(0, 0, 0, 0.1);
   color: white;
   position: absolute;
   border: 0px solid blue;
