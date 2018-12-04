@@ -11,7 +11,7 @@ export const drawHealth = (ctx, health) => {
   ctx.beginPath();
   ctx.fillStyle = "white";
   ctx.font = 'bold 23px "Roboto Slab"';
-  ctx.fillText(Math.floor(health).toString(), canvas.width - 100, 100);
+  ctx.fillText("Health: " + Math.floor(health).toString(), canvas.width - 150, 50);
   ctx.fill();
   ctx.closePath();
 }
