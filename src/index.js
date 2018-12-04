@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function spawnZombies() {
     let x = -100;
     let y = Math.floor(Math.random() * (canvas.height-150)) + 50;
-    let randomSpawn = Math.floor(Math.random() * 10) + 28;
+    let randomSpawn = Math.floor(Math.random() * 5) + 28;
 
     for (let zomb in zombies) {
       if (zombies[zomb].x <= 150) {
