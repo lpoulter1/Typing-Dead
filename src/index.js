@@ -1,5 +1,5 @@
 import Zombie from "./zombie";
-import { drawPlayer, drawHealth } from "./player";
+import { drawPlayer, drawHealth, drawKillCount } from "./player";
 import { randomWord } from "./dictionary";
 
 // 1160 x 90
@@ -18,11 +18,12 @@ document.addEventListener('DOMContentLoaded', () => {
   let shift = 0;
   let deadShift = 575;
   let alive = true;
+  let killCount = 0;
   
   function spawnZombies() {
     let x = -100;
     let y = Math.floor(Math.random() * (canvas.height-150)) + 50;
-    let randomSpawn = Math.floor(Math.random() * 5) + 28;
+    let randomSpawn = Math.floor(Math.random() * 5) + (31 - round);
 
     for (let zomb in zombies) {
       if (zombies[zomb].x <= 150) {
@@ -74,6 +75,10 @@ document.addEventListener('DOMContentLoaded', () => {
         
       }
     }
+    if (counter % 2000 === 0) {
+      console.log(round)
+      round += 1
+    }
     counter += 10;
 
     if (health > 0) {
@@ -81,7 +86,8 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       health = 0;
     }
-    drawHealth(ctx, health)
+    drawHealth(ctx, health);
+    drawKillCount(ctx, killCount);
   }
 
   input.addEventListener('keyup', handleZombie)
@@ -90,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
       for (let zomb in zombies) {
         if (input.value === zombies[zomb].word) {
           // delete zombies[zomb];
+          killCount += 1;
           zombies[zomb].word = ""
           zombies[zomb].alive = false;
           break;
