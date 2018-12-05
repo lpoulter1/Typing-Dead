@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function spawnZombies() {
     let x = -100;
     let y = Math.floor(Math.random() * (canvas.height-150)) + 50;
-    let randomSpawn = Math.floor(Math.random() * 5) + (40 - round);
+    let randomSpawn = Math.floor(Math.random() * 5) + (45 - round);
 
     for (let zomb in zombies) {
       if (zombies[zomb].x <= 150) {
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     drawWordList(zombies);
 
     for (let zomb in zombies) {
-      let { x, y, img, shift } = zombies[zomb];
+      let { x } = zombies[zomb];
       if (zombies[zomb].alive) {
         zombies[zomb].draw()
         if (x < canvas.width - 200) {
@@ -66,11 +66,13 @@ document.addEventListener('DOMContentLoaded', () => {
             zombies[zomb].shift = 0;
           }
           Object.values(zombies).forEach((zombie, idx) => {
-            if (idx < parseInt(zomb.slice(6))+2 && idx > parseInt(zomb.slice(6))) {
-              if (zombies[zomb].x >= 30) {
+            if (idx < parseInt(zomb.slice(6))+3 && idx > parseInt(zomb.slice(6))) {
+              if (zombies[zomb].x >= 20) {
                 if (zombies[zomb].y < zombie.y && zombies[zomb].y > zombie.y - 30) {
                   zombies[zomb].dy = -1;
                 } else if (zombies[zomb].y <= zombie.y + 30 && zombies[zomb].y >= zombie.y) {
+                  zombies[zomb].dy = 1;
+                } else if (zombies[zomb].y === zombie.y) {
                   zombies[zomb].dy = 1;
                 } else {
                   zombies[zomb].dy = 0;
