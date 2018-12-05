@@ -38,6 +38,7 @@
 #word-list {
   font-family: "Roboto Slab";
   font-size: 14px;
+  font-weight: bold;
   list-style: none;
   position: absolute;
   display: block;

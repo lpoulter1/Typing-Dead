@@ -1,5 +1,5 @@
 import Zombie from "./zombie";
-import { drawPlayer, drawHealth, drawKillCount, drawWordList } from "./player";
+import { drawPlayer, drawHealth, drawKillCount, drawWordList, drawWPM } from "./player";
 import { randomWord } from "./dictionary";
 import { drawStartScreen } from "./start_screen";
 
@@ -16,16 +16,16 @@ document.addEventListener('DOMContentLoaded', () => {
   let zombieCount = 0;
   let counter = 0;
   let round = 1;
-  let shift = 0;
-  let deadShift = 575;
   let alive = true;
   let killCount = 0;
+  let timer = 0;
+  let a = 0;
+  let b = 0;
   
   function spawnZombies() {
     let x = -100;
     let y = Math.floor(Math.random() * (canvas.height-150)) + 50;
-    let randomSpawn = Math.floor(Math.random() * 5) + (45 - round);
-
+    
     for (let zomb in zombies) {
       if (zombies[zomb].x <= 150) {
         while (y < zombies[zomb].y + 100 && y > zombies[zomb].y - 100) {
@@ -33,86 +33,104 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     }
+    let randomSpawn = Math.floor(Math.random() * 5) + (45 - round);
     if (counter % randomSpawn === 0) {
-      zombies[`zombie${zombieCount}`] = new Zombie(ctx, randomWord(), x, y, dy, shift, deadShift, alive);
+      zombies[`zombie${zombieCount}`] = new Zombie(ctx, randomWord(), x, y, dy, alive);
       zombieCount += 1;
     }
   }
   
   function renderGame() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    spawnZombies();
-    drawWordList(zombies);
-
-    for (let zomb in zombies) {
-      let { x } = zombies[zomb];
-      if (zombies[zomb].alive) {
-        zombies[zomb].draw()
-        if (x < canvas.width - 200) {
-          if (zombies[zomb].x > 350) {
-            if (zombies[zomb].y < canvas.height / 2) {
-              zombies[zomb].dy = 2;
-            } else if (zombies[zomb].y > canvas.height / 2) {
-              zombies[zomb].dy = -2;
-            } else {
-              zombies[zomb].dy = 0;
-            }
-          }
-          zombies[zomb].x += dx;
-          zombies[zomb].y += zombies[zomb].dy;
-          zombies[zomb].shift += 100.75;
-          if (zombies[zomb].shift >= 1155) {
-            zombies[zomb].shift = 0;
-          }
-          Object.values(zombies).forEach((zombie, idx) => {
-            if (idx < parseInt(zomb.slice(6))+3 && idx > parseInt(zomb.slice(6))) {
-              if (zombies[zomb].x >= 20) {
-                if (zombies[zomb].y < zombie.y && zombies[zomb].y > zombie.y - 30) {
-                  zombies[zomb].dy = -1;
-                } else if (zombies[zomb].y <= zombie.y + 30 && zombies[zomb].y >= zombie.y) {
-                  zombies[zomb].dy = 1;
-                } else if (zombies[zomb].y === zombie.y) {
-                  zombies[zomb].dy = 1;
-                } else {
-                  zombies[zomb].dy = 0;
-                }
+    setTimeout(function () {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      let request = requestAnimationFrame(renderGame);
+      spawnZombies();
+      drawWordList(zombies);
+      drawWPM(ctx, timer, killCount);
+      
+      for (let zomb in zombies) {
+        let { x } = zombies[zomb];
+        if (zombies[zomb].alive) {
+          zombies[zomb].draw()
+          if (x < canvas.width - 200) {
+            if (zombies[zomb].x > 350) {
+              if (zombies[zomb].y < canvas.height / 2) {
+                zombies[zomb].dy = 2;
+              } else if (zombies[zomb].y > canvas.height / 2) {
+                zombies[zomb].dy = -2;
+              } else {
+                zombies[zomb].dy = 0;
               }
             }
-          })
-        } else if (health > 0) {
-          health -= .1
-        }
-      } else {
-        zombies[zomb].drawDead();
-        zombies[zomb].deadShift += 97;
-        if (zombies[zomb].deadShift >= 1250) {
-          zombies[zomb].deadShift = 1254;
+            zombies[zomb].x += dx;
+            zombies[zomb].y += zombies[zomb].dy;
+            zombies[zomb].shift += 100.75;
+            if (zombies[zomb].shift >= 1155) {
+              zombies[zomb].shift = 0;
+            }
+            Object.values(zombies).forEach((zombie, idx) => {
+              if (idx < parseInt(zomb.slice(6))+3 && idx > parseInt(zomb.slice(6))) {
+                if (zombies[zomb].x >= 20) {
+                  if (zombies[zomb].y < zombie.y && zombies[zomb].y > zombie.y - 30) {
+                    zombies[zomb].dy = -1;
+                  } else if (zombies[zomb].y <= zombie.y + 30 && zombies[zomb].y >= zombie.y) {
+                    zombies[zomb].dy = 1;
+                  } else if (zombies[zomb].y === zombie.y) {
+                    zombies[zomb].dy = 1;
+                  } else {
+                    zombies[zomb].dy = 0;
+                  }
+                }
+              }
+            })
+          } else if (health > 0) {
+            health -= .1
+          }
+        } else {
+          zombies[zomb].drawDead();
+          zombies[zomb].deadShift += 97;
+          if (zombies[zomb].deadShift >= 1250) {
+            zombies[zomb].deadShift = 1254;
+          }
         }
       }
-    }
 
-    for (let zomb in zombies) {
-      if (zombies[zomb].alive) {
-        zombies[zomb].drawText()
-      } else {
-        
+      for (let zomb in zombies) {
+        if (zombies[zomb].alive) {
+          zombies[zomb].drawText()
+        } else {
+          
+        }
       }
-    }
-    if (counter % 2000 === 0) {
-      round += 1
-    }
-    counter += 10;
 
-    drawKillCount(ctx, killCount);
-    if (health > 0) {
-      drawHealth(ctx, health);
-      drawPlayer(ctx);
-    } else if (health <= 0) {
-      health = 0;
-      drawHealth(ctx, health);
-      clearInterval(window.intervalId);
-      gameOver();
+      if (counter % 1000 === 0) {
+        round += 1
+      }
+      counter += 10;
+      console.log(counter);
+
+
+      drawKillCount(ctx, killCount);
+      if (health > 0) {
+        drawHealth(ctx, health);
+        drawPlayer(ctx);
+      } else if (health <= 0) {
+        health = 0;
+        drawHealth(ctx, health);
+        // clearInterval(window.intervalId);
+        cancelAnimationFrame(request)
+        gameOver();
+      }
+    }, 1000 / 12);
+  }
+
+  
+  input.addEventListener('input', startTimer);
+
+  function startTimer(e) {
+    if (e.target.value.length === 1) {
+      debugger
+      a = Date.now();
     }
   }
 
@@ -128,8 +146,10 @@ document.addEventListener('DOMContentLoaded', () => {
           break;
         }
       }
-      console.log(input.value);
       input.value = "";
+      b = Date.now();
+      debugger;
+      timer += (b-a)/1000;
     } else {
       null
     }
@@ -143,17 +163,17 @@ document.addEventListener('DOMContentLoaded', () => {
     zombieCount = 0;
     counter = 0;
     round = 1;
-    shift = 0;
-    deadShift = 575;
     alive = true;
     killCount = 0;
+    timer = 0;
   }
 
   function gameOver() {
     canvas.className = "start-screen";
     drawStartScreen(ctx);
     wordList.style.display = "none";
-
+    input.value = "";
+    input.disabled = true;
     canvas.addEventListener('click', startGame)
   }
 
@@ -161,9 +181,11 @@ document.addEventListener('DOMContentLoaded', () => {
     canvas.removeEventListener('click', startGame)
     resetGame();
     canvas.className = "game-screen";
-    window.intervalId = setInterval(renderGame, 100);
+    // window.intervalId = setInterval(renderGame, 100);
+    requestAnimationFrame(renderGame)
     input.disabled = false;
-    input.autofocus = true;
+    input.focus();
+    wordList.style.display = "block";
   }
 
   if (canvas.className === "start-screen") {

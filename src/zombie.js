@@ -1,12 +1,12 @@
 class Zombie {
-  constructor(ctx, word, x, y, dy, shift, deadShift, alive){
+  constructor(ctx, word, x, y, dy, alive){
     this.ctx = ctx;
     this.word = word;
     this.x = x;
     this.y = y;
     this.dy = dy;
-    this.shift = shift;
-    this.deadShift = deadShift;
+    this.shift = 0;
+    this.deadShift = 575;
     this.alive = alive;
   }
   
