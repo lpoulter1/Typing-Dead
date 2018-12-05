@@ -1,6 +1,7 @@
 import Zombie from "./zombie";
 import { drawPlayer, drawHealth, drawKillCount } from "./player";
 import { randomWord } from "./dictionary";
+import StartScreen from "./start_screen";
 
 // 1160 x 90
 
@@ -10,7 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const input = document.getElementById('typing-form');
 
   let zombies = {};
-  let dx = 5;
+  let dx = 3.5;
+  let dy = 0;
   let health = 100;
   let zombieCount = 0;
   let counter = 0;
@@ -25,13 +27,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let y = Math.floor(Math.random() * (canvas.height-150)) + 50;
     let randomSpawn = Math.floor(Math.random() * 5) + (30 - round);
 
-    for (let zomb in zombies) {
-      if (zombies[zomb].x <= 150) {
-        while (y < zombies[zomb].y + 100 && y > zombies[zomb].y - 100) {
-          y = Math.floor(Math.random() * (canvas.height-150)) + 50;
-        }
-      }
-    }
+    // for (let zomb in zombies) {
+    //   if (zombies[zomb].x <= 150) {
+    //     while (y < zombies[zomb].y + 100 && y > zombies[zomb].y - 100) {
+    //       y = Math.floor(Math.random() * (canvas.height-150)) + 50;
+    //     }
+    //   }
+    // }
 
     // if (Object.values(zombies).length > 0) {
     //   let lastZombie = Object.values(zombies)[Object.values(zombies).length - 1]
@@ -64,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (zombies[zomb].shift >= 1155) {
             zombies[zomb].shift = 0;
           }
-        } else if (health > 0 && Object.keys(zombies).length >= 1) {
+        } else if (health > 0) {
           health -= .1
           console.log(health)
         }
@@ -84,6 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
       }
     }
+    
     if (counter % 2000 === 0) {
       console.log(round)
       round += 1
@@ -104,7 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.keyCode === 13) {
       for (let zomb in zombies) {
         if (input.value === zombies[zomb].word) {
-          // delete zombies[zomb];
           killCount += 1;
           zombies[zomb].word = ""
           zombies[zomb].alive = false;
@@ -119,8 +121,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (canvas.className === "game-screen") {
-    setInterval(renderGame, 150);
+    setInterval(renderGame, 100);
   } else if (canvas.className === "game-over-screen") {
 
+  } else if (canvas.className === "start-screen") {
+    StartScreen.draw();
   }
 })

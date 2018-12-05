@@ -32,7 +32,8 @@ class Zombie {
 
   drawText () {
     this.ctx.beginPath();
-      this.ctx.fillStyle = "white";
+      // this.ctx.fillStyle = "white";
+      this.ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
       this.ctx.font = 'bold 18px "Roboto Slab"';
       this.ctx.fillText(this.word, this.x, this.y - 7);
       this.ctx.fill();
