@@ -128,7 +128,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   input.addEventListener('keyup', handleZombie)
   function handleZombie(e) {
-    if (e.keyCode === 13) {
+    if (e.keyCode === 13 || e.keyCode === 32) {
+      input.value = input.value.trim();
       for (let zomb in zombies) {
         if (input.value === zombies[zomb].word) {
           killCount += 1;
