@@ -45,13 +45,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // }
 
     if (counter % randomSpawn === 0) {
-      zombies[`zombie${zombieCount}`] = new Zombie(ctx, randomWord(), x, y, shift, deadShift, alive);
+      zombies[`zombie${zombieCount}`] = new Zombie(ctx, randomWord(), x, y, dy, shift, deadShift, alive);
       zombieCount += 1;
     }
     console.log(counter)
   }
   
   function renderGame() {
+    debugger
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     spawnZombies();
@@ -62,13 +63,36 @@ document.addEventListener('DOMContentLoaded', () => {
         zombies[zomb].draw()
         if (x < canvas.width - 200) {
           zombies[zomb].x += dx;
+          zombies[zomb].y += zombies[zomb].dy;
           zombies[zomb].shift += 100.75;
           if (zombies[zomb].shift >= 1155) {
             zombies[zomb].shift = 0;
           }
+          Object.values(zombies).forEach((zombie, idx) => {
+            if (idx < parseInt(zomb.slice(6))+2 && idx > parseInt(zomb.slice(6))) {
+              if (zombies[zomb].x >= 30) {
+                if (zombies[zomb].y < zombie.y && zombies[zomb].y > zombie.y - 30) {
+                  zombies[zomb].dy = -1;
+                } else if (zombies[zomb].y <= zombie.y + 30 && zombies[zomb].y >= zombie.y) {
+                  zombies[zomb].dy = 1;
+                } else {
+                  zombies[zomb].dy = 0;
+                }
+              }
+            }
+          })
         } else if (health > 0) {
           health -= .1
           console.log(health)
+        }
+        if (zombies[zomb].x > 400) {
+          if (zombies[zomb].y < canvas/2) {
+            zombies[zomb].dy = 2;
+          } else if (zombies[zomb].y > canvas/2) {
+            zombies[zomb].dy = -2;
+          } else {
+            zombies[zomb].dy = 0;
+          }
         }
       } else {
         zombies[zomb].drawDead();
