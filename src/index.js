@@ -10,18 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const ctx = canvas.getContext("2d");
   const input = document.getElementById('typing-form');
   const wordList = document.getElementById('word-list');
-  let zombies = {};
-  let dx = 3.5;
-  let dy = 0;
-  let health = 100;
-  let zombieCount = 0;
-  let counter = 0;
-  let round = 1;
-  let alive = true;
-  let killCount = 0;
-  let timer = 0;
-  let a = 0;
-  let b = 0;
+  let zombies, dx, dy, health, zombieCount, counter, round, 
+  alive, killCount, timer, a, b;
+  let playerAttack = false;
   
   function spawnZombies() {
     let x = -100;
@@ -133,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   input.addEventListener('input', startTimer);
   function startTimer(e) {
-    if (a == 0) {
+    if (a === 0 && e.target.value != " ") {
       a = Date.now();
     }
   }
@@ -143,6 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
       input.value = input.value.trim();
       for (let zomb in zombies) {
         if (input.value === zombies[zomb].word) {
+          // playerAttack = true;
           let px = 225;
           let py = 239;
           drawPlayer(ctx, px, py);
@@ -234,6 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   let titlepos = -60;
+  let startCounter = 0;
   function titleDrop() {
     input.removeEventListener('keyup', handleZombie);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -241,8 +234,8 @@ document.addEventListener('DOMContentLoaded', () => {
     titlepos += 5;
     if (titlepos >= 140) {
       titlepos = 140;
-      counter += .5;
-      if (counter % 10 <= 6) {
+      startCounter += .5;
+      if (startCounter % 10 <= 6) {
         drawStartClick(ctx);
       } else {
         null;
