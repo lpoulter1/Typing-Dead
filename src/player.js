@@ -11,7 +11,7 @@ export const drawHealth = (ctx, health) => {
   ctx.beginPath();
   ctx.fillStyle = "white";
   ctx.font = 'bold 18px "Roboto Slab"';
-  ctx.fillText("Health: " + Math.floor(health).toString(), canvas.width - 120, 50);
+  ctx.fillText("Health: " + Math.floor(health).toString(), canvas.width - 100, 50);
   ctx.fill();
   ctx.closePath();
 }
@@ -42,9 +42,9 @@ export const drawWPM = (ctx, timer, kills) => {
   ctx.fillStyle = "white";
   ctx.font = 'bold 18px "Roboto Slab"';
   if ((kills/(timer/60))) {
-    ctx.fillText("WPM: " + (kills/(timer/60)).toFixed(2), 460, 50);
+    ctx.fillText("WPM: " + (kills/(timer/60)).toFixed(2), 480, 50);
   } else {
-    ctx.fillText("WPM: 0", 460, 50);
+    ctx.fillText("WPM: 0", 480, 50);
   }
   ctx.fill();
   ctx.closePath();

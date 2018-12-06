@@ -5,6 +5,7 @@ import { drawStartScreen, drawTitle, drawStartClick } from "./start_screen";
 import { drawGameOver, drawGameOverWPM, drawGameOverKills, drawRestartClick } from './game_over_screen';
 
 document.addEventListener('DOMContentLoaded', () => {
+  const page = document.getElementById("page")
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
   const input = document.getElementById('typing-form');
@@ -33,8 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     }
-    let randomSpawn = Math.floor(Math.random() * 2.5) + (35 - round);
-    if (counter % randomSpawn === 0) {
+    let randomSpawn = Math.floor(Math.random() * 2.5) + (38 - round);
+    if (counter % randomSpawn <= 2) {
       zombies[`zombie${zombieCount}`] = new Zombie(ctx, randomWord(), x, y, dy, alive);
       zombieCount += 1;
     }
@@ -43,6 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderGame() {
     setTimeout(function () {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      canvas.addEventListener('click', input.focus())
+      input.addEventListener('keyup', handleZombie);
       let request = requestAnimationFrame(renderGame);
       spawnZombies();
       drawWordList(zombies);
@@ -103,10 +106,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
-      if (counter % 1000 === 0) {
-        round += 1
+      if (counter % 2000 === 0) {
+        round += .5
       }
       counter += 10;
+      console.log(counter)
 
       drawKillCount(ctx, killCount);
       if (health > 0) {
@@ -130,7 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  input.addEventListener('keyup', handleZombie);
   function handleZombie(e) {
     if (e.keyCode === 13 || e.keyCode === 32) {
       input.value = input.value.trim();
@@ -166,6 +169,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let endCounter = 0;
   let fade = 0;
   function gameOver() {
+    canvas.addEventListener('click', input.focus())
+    input.removeEventListener('keyup', handleZombie);
     endCounter = 0;
     fade = 0;
     canvas.className = "game-over-screen";
@@ -174,7 +179,6 @@ document.addEventListener('DOMContentLoaded', () => {
     input.value = "";
     input.disabled = true;
     input.style.display = "none";
-    canvas.addEventListener('click', startGame)
   }
 
   function gameOverAnimate() {
@@ -193,6 +197,8 @@ document.addEventListener('DOMContentLoaded', () => {
       drawGameOverKills(ctx, killCount);
     }
     if (endCounter >= 15) {
+      canvas.addEventListener('click', startGame)
+      page.addEventListener('keydown', startGame)
       if (endCounter % 10 >= 4) {
         drawRestartClick(ctx);
       } else {
@@ -202,20 +208,24 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function startGame(e) {
-    canvas.removeEventListener('click', startGame)
-    resetGame();
-    clearInterval(window.startInterval);
-    clearInterval(window.overInterval);
-    canvas.className = "game-screen";
-    // window.intervalId = setInterval(renderGame, 100);
-    requestAnimationFrame(renderGame)
-    input.disabled = false;
-    input.style.display = "block";
-    input.focus();
+    if (e.keyCode === 13 || e.button === 0) {
+      canvas.removeEventListener('click', startGame);
+      page.removeEventListener('keydown', startGame);
+      resetGame();
+      clearInterval(window.startInterval);
+      clearInterval(window.overInterval);
+      canvas.className = "game-screen";
+      // window.intervalId = setInterval(renderGame, 100);
+      requestAnimationFrame(renderGame)
+      input.disabled = false;
+      input.style.display = "block";
+      input.focus();
+    }
   }
 
   let titlepos = -60;
   function titleDrop() {
+    input.removeEventListener('keyup', handleZombie);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawStartScreen(ctx, canvas);
     titlepos += 5;
@@ -228,6 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
         null;
       }
       canvas.addEventListener('click', startGame)
+      page.addEventListener('keydown', startGame)
     }
     drawTitle(ctx, titlepos);
   }
