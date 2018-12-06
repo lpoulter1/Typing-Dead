@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function startGame(e) {
     canvas.removeEventListener('click', startGame)
     resetGame();
-    clearInterval(1);
+    clearInterval(window.startInterval);
     canvas.className = "game-screen";
     // window.intervalId = setInterval(renderGame, 100);
     requestAnimationFrame(renderGame)
@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   if (canvas.className === "start-screen") {
     drawStartScreen(ctx, canvas);
-    setInterval(titleDrop, 70);
+    window.startInterval = setInterval(titleDrop, 70);
     // canvas.addEventListener('click', startGame)
   }
 })
