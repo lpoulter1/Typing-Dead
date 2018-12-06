@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     }
-    let randomSpawn = Math.floor(Math.random() * 2.5) + (40 - round);
+    let randomSpawn = Math.floor(Math.random() * 2.5) + (35 - round);
     if (counter % randomSpawn === 0) {
       zombies[`zombie${zombieCount}`] = new Zombie(ctx, randomWord(), x, y, dy, alive);
       zombieCount += 1;
