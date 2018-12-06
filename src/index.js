@@ -110,7 +110,6 @@ document.addEventListener('DOMContentLoaded', () => {
         round += .5
       }
       counter += 10;
-      console.log(counter)
 
       drawKillCount(ctx, killCount);
       if (health > 0) {
@@ -246,6 +245,5 @@ document.addEventListener('DOMContentLoaded', () => {
     drawStartScreen(ctx, canvas);
     input.style.display = "none";
     window.startInterval = setInterval(titleDrop, 70);
-    // canvas.addEventListener('click', startGame)
   }
 })
