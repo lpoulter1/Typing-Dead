@@ -1,7 +1,7 @@
 import Zombie from "./zombie";
 import { drawPlayer, drawHealth, drawKillCount, drawWordList, drawWPM } from "./player";
 import { randomWord } from "./dictionary";
-import { drawStartScreen } from "./start_screen";
+import { drawStartScreen, drawTitle, drawStartClick } from "./start_screen";
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -107,8 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
         round += 1
       }
       counter += 10;
-      console.log(counter);
-
 
       drawKillCount(ctx, killCount);
       if (health > 0) {
@@ -126,10 +124,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   
   input.addEventListener('input', startTimer);
-
   function startTimer(e) {
     if (e.target.value.length === 1) {
-      debugger
       a = Date.now();
     }
   }
@@ -148,7 +144,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       input.value = "";
       b = Date.now();
-      debugger;
       timer += (b-a)/1000;
     } else {
       null
@@ -180,6 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function startGame(e) {
     canvas.removeEventListener('click', startGame)
     resetGame();
+    clearInterval(1);
     canvas.className = "game-screen";
     // window.intervalId = setInterval(renderGame, 100);
     requestAnimationFrame(renderGame)
@@ -187,9 +183,27 @@ document.addEventListener('DOMContentLoaded', () => {
     input.focus();
     wordList.style.display = "block";
   }
-
+  let startCounter = 0;
+  let titlepos = -60;
+  function titleDrop() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawStartScreen(ctx, canvas);
+    titlepos += 5;
+    if (titlepos >= 140) {
+      titlepos = 140;
+      counter += .5;
+      if (counter % 10 <= 7) {
+        drawStartClick(ctx);
+      } else {
+        null;
+      }
+      canvas.addEventListener('click', startGame)
+    }
+    drawTitle(ctx, titlepos);
+  }
   if (canvas.className === "start-screen") {
-    drawStartScreen(ctx);
-    canvas.addEventListener('click', startGame)
+    drawStartScreen(ctx, canvas);
+    setInterval(titleDrop, 70);
+    // canvas.addEventListener('click', startGame)
   }
 })

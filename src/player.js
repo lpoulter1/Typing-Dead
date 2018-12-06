@@ -42,7 +42,6 @@ export const drawWPM = (ctx, timer, kills) => {
   ctx.fillStyle = "white";
   ctx.font = 'bold 18px "Roboto Slab"';
   ctx.fillText("WPM: " + (kills/(timer/60)).toFixed(2), 460, 50);
-  // debugger
   ctx.fill();
   ctx.closePath();
 }
