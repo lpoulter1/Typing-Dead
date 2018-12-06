@@ -54,8 +54,8 @@ document.addEventListener('DOMContentLoaded', () => {
       for (let zomb in zombies) {
         let { x } = zombies[zomb];
         if (zombies[zomb].alive) {
-          zombies[zomb].draw()
           if (x < canvas.width - 200) {
+            zombies[zomb].draw()
             if (zombies[zomb].x > 350) {
               if (zombies[zomb].y < canvas.height / 2) {
                 zombies[zomb].dy = 2;
@@ -86,7 +86,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
               }
             })
-          } else if (health > 0) {
+          } else {
+            zombies[zomb].drawAttack();
+            zombies[zomb].deadShift += 97;
+            if (zombies[zomb].deadShift >= 1140) {
+              zombies[zomb].deadShift = 0;
+            }
             health -= .3
           }
         } else {
@@ -116,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else if (health <= 0) {
         health = 0;
         drawHealth(ctx, health);
-        // clearInterval(window.intervalId);
+        clearInterval(window.intervalId);
         cancelAnimationFrame(request)
         gameOver();
       }

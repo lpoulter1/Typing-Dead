@@ -24,10 +24,20 @@ class Zombie {
     const zombieImg = new Image();
     zombieImg.src = "../Typing-Dead/assets/zombie.png";
     this.ctx.drawImage(zombieImg,
-      this.deadShift, 270,
-      50, 90,
-      this.x, this.y,
-      50, 90);
+                        this.deadShift, 270,
+                        50, 90,
+                        this.x, this.y,
+                        50, 90);
+  }
+
+  drawAttack() {
+    const zombieImg = new Image();
+    zombieImg.src = "../Typing-Dead/assets/zombie.png";
+    this.ctx.drawImage(zombieImg,
+                        this.deadShift, 178,
+                        75, 90,
+                        this.x, this.y,
+                        55, 90);
   }
 
   drawText () {
@@ -38,6 +48,7 @@ class Zombie {
       this.ctx.fill();
     this.ctx.closePath();
   }
+
 }
 
 export default Zombie;
