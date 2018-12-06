@@ -1,10 +1,18 @@
 
-export const drawPlayer = (ctx) => {
+export const drawPlayer = (ctx, x, y) => {
+  const playerImg = new Image();
+  playerImg.src = "../Typing-Dead/assets/player.png";
+  // 225 x 239
+  ctx.drawImage(playerImg,
+                    x, y,
+                    72, 81,
+                    canvas.width - 150, canvas.height / 2,
+                    72, 81);
   ctx.beginPath();
-  ctx.rect(canvas.width - 150, canvas.height / 2, 35, 70);
-  ctx.fillStyle = "#7FFF00";
-  ctx.fill();
-  ctx.closePath();
+  // ctx.rect(canvas.width - 150, canvas.height / 2, 35, 70);
+  // ctx.fillStyle = "#7FFF00";
+  // ctx.fill();
+  // ctx.closePath();
 }
 
 export const drawHealth = (ctx, health) => {

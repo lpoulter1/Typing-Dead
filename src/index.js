@@ -116,8 +116,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
       drawKillCount(ctx, killCount);
       if (health > 0) {
+        let px = 297;
+        let py = 240;
         drawHealth(ctx, health);
-        drawPlayer(ctx);
+        drawPlayer(ctx, px, py);
       } else if (health <= 0) {
         health = 0;
         drawHealth(ctx, health);
@@ -141,6 +143,9 @@ document.addEventListener('DOMContentLoaded', () => {
       input.value = input.value.trim();
       for (let zomb in zombies) {
         if (input.value === zombies[zomb].word) {
+          let px = 225;
+          let py = 239;
+          drawPlayer(ctx, px, py);
           killCount += 1;
           zombies[zomb].word = null;
           zombies[zomb].alive = false;
