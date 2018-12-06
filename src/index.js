@@ -101,8 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
       for (let zomb in zombies) {
         if (zombies[zomb].alive) {
           zombies[zomb].drawText()
-        } else {
-          
         }
       }
 
@@ -128,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   input.addEventListener('input', startTimer);
   function startTimer(e) {
-    if (e.target.value.length === 1) {
+    if (a == 0) {
       a = Date.now();
     }
   }
@@ -139,14 +137,17 @@ document.addEventListener('DOMContentLoaded', () => {
       for (let zomb in zombies) {
         if (input.value === zombies[zomb].word) {
           killCount += 1;
-          zombies[zomb].word = ""
+          zombies[zomb].word = null;
           zombies[zomb].alive = false;
           break;
         }
       }
       input.value = "";
-      b = Date.now();
-      timer += (b-a)/1000;
+      if (a > 0) {
+        b = Date.now();
+        timer += (b-a)/1000;
+      }
+      a = 0;
     } else {
       null
     }

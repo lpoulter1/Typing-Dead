@@ -29,7 +29,7 @@ export const drawWordList = (zombies) => {
   let list = document.getElementById("word-list");
   list.innerHTML = "";
   Object.values(zombies).forEach(zombie => {
-    if (zombie.x >= 0) {
+    if (zombie.x >= 0 && zombie.alive) {
       if (zombie.word.length > 0 && list.children.length < 10) {
         list.insertAdjacentHTML("beforeend", `<li>${zombie.word}</li>`);
       }
