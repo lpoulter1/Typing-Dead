@@ -2,7 +2,7 @@ import Zombie from "./zombie";
 import { drawPlayer, drawHealth, drawKillCount, drawWordList, drawWPM } from "./player";
 import { randomWord } from "./dictionary";
 import { drawStartScreen, drawTitle, drawStartClick } from "./start_screen";
-
+import { drawGameOver, drawGameOverWPM, drawGameOverKills, drawRestartClick } from './game_over_screen';
 
 document.addEventListener('DOMContentLoaded', () => {
   const canvas = document.getElementById("canvas");
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     }
-    let randomSpawn = Math.floor(Math.random() * 5) + (45 - round);
+    let randomSpawn = Math.floor(Math.random() * 2.5) + (40 - round);
     if (counter % randomSpawn === 0) {
       zombies[`zombie${zombieCount}`] = new Zombie(ctx, randomWord(), x, y, dy, alive);
       zombieCount += 1;
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
               }
             })
           } else if (health > 0) {
-            health -= .1
+            health -= .3
           }
         } else {
           zombies[zomb].drawDead();
@@ -163,27 +163,57 @@ document.addEventListener('DOMContentLoaded', () => {
     timer = 0;
   }
 
+  let endCounter = 0;
+  let fade = 0;
   function gameOver() {
-    canvas.className = "start-screen";
-    drawStartScreen(ctx);
-    wordList.style.display = "none";
+    endCounter = 0;
+    fade = 0;
+    canvas.className = "game-over-screen";
+    window.overInterval = setInterval(gameOverAnimate, 100);
+    wordList.innerHTML = "";
     input.value = "";
     input.disabled = true;
+    input.style.display = "none";
     canvas.addEventListener('click', startGame)
+  }
+
+  function gameOverAnimate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawStartScreen(ctx, canvas);
+    drawGameOver(ctx, fade);
+    fade += .05;
+    endCounter += .5;
+    if (fade >= 1) {
+      fade = 1;
+    }
+    if (endCounter >= 10) {
+      drawGameOverWPM(ctx, killCount, timer);
+    }
+    if (endCounter >= 12.5) {
+      drawGameOverKills(ctx, killCount);
+    }
+    if (endCounter >= 15) {
+      if (endCounter % 10 >= 4) {
+        drawRestartClick(ctx);
+      } else {
+        null;
+      }
+    }
   }
 
   function startGame(e) {
     canvas.removeEventListener('click', startGame)
     resetGame();
     clearInterval(window.startInterval);
+    clearInterval(window.overInterval);
     canvas.className = "game-screen";
     // window.intervalId = setInterval(renderGame, 100);
     requestAnimationFrame(renderGame)
     input.disabled = false;
+    input.style.display = "block";
     input.focus();
-    wordList.style.display = "block";
   }
-  let startCounter = 0;
+
   let titlepos = -60;
   function titleDrop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -192,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (titlepos >= 140) {
       titlepos = 140;
       counter += .5;
-      if (counter % 10 <= 7) {
+      if (counter % 10 <= 6) {
         drawStartClick(ctx);
       } else {
         null;
@@ -203,6 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   if (canvas.className === "start-screen") {
     drawStartScreen(ctx, canvas);
+    input.style.display = "none";
     window.startInterval = setInterval(titleDrop, 70);
     // canvas.addEventListener('click', startGame)
   }
