@@ -11,7 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const input = document.getElementById('typing-form');
   const wordList = document.getElementById('word-list');
   let zombies, dx, dy, health, zombieCount, counter, round, 
-  alive, killCount, timer, a, b;
+  alive, killCount, timer;
+  let a = 0;
+  let b = 0;
   let playerAttack = false;
   
   function spawnZombies() {
@@ -36,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(function () {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       canvas.addEventListener('click', input.focus())
-      input.addEventListener('keyup', handleZombie);
+      input.addEventListener('keydown', handleZombie);
       let request = requestAnimationFrame(renderGame);
       spawnZombies();
       drawWordList(zombies);
@@ -100,17 +102,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
-      if (counter % 2000 === 0) {
+      if (counter % 1000 === 0) {
         round += .5
       }
       counter += 10;
 
       drawKillCount(ctx, killCount);
       if (health > 0) {
-        let px = 297;
-        let py = 240;
         drawHealth(ctx, health);
-        drawPlayer(ctx, px, py);
+        drawPlayer(ctx, playerAttack);
+        playerAttack = false;
       } else if (health <= 0) {
         health = 0;
         drawHealth(ctx, health);
@@ -130,14 +131,16 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function handleZombie(e) {
-    if (e.keyCode === 13 || e.keyCode === 32) {
-      input.value = input.value.trim();
+    // let submit = false
+    // let value = input.value.trim();
+    // if (e.keyCode === 32 || e.keyCode === 13) {
+    //   submit = true;
+    // }
+    if (e.keyCode === 32 || e.keyCode === 13) {
+      let value = input.value.trim();
       for (let zomb in zombies) {
-        if (input.value === zombies[zomb].word) {
-          // playerAttack = true;
-          let px = 225;
-          let py = 239;
-          drawPlayer(ctx, px, py);
+        if (value === zombies[zomb].word) {
+          playerAttack = true;
           killCount += 1;
           zombies[zomb].word = null;
           zombies[zomb].alive = false;
@@ -172,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let fade = 0;
   function gameOver() {
     canvas.addEventListener('click', input.focus())
-    input.removeEventListener('keyup', handleZombie);
+    input.removeEventListener('keydown', handleZombie);
     endCounter = 0;
     fade = 0;
     canvas.className = "game-over-screen";
@@ -228,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let titlepos = -60;
   let startCounter = 0;
   function titleDrop() {
-    input.removeEventListener('keyup', handleZombie);
+    input.removeEventListener('keydown', handleZombie);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawStartScreen(ctx, canvas);
     titlepos += 5;

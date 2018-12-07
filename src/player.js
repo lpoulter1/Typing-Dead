@@ -1,18 +1,20 @@
 
-export const drawPlayer = (ctx, x, y) => {
+export const drawPlayer = (ctx, attack) => {
   const playerImg = new Image();
   playerImg.src = "../Typing-Dead/assets/player.png";
-  // 225 x 239
-  ctx.drawImage(playerImg,
-                    x, y,
-                    72, 81,
-                    canvas.width - 150, canvas.height / 2,
-                    72, 81);
-  ctx.beginPath();
-  // ctx.rect(canvas.width - 150, canvas.height / 2, 35, 70);
-  // ctx.fillStyle = "#7FFF00";
-  // ctx.fill();
-  // ctx.closePath();
+  if (attack) {
+    ctx.drawImage(playerImg,
+                  225, 239,
+                  72, 81,
+                  canvas.width - 150, canvas.height / 2,
+                  72, 81);
+  } else {
+    ctx.drawImage(playerImg,
+                  297, 240,
+                  72, 81,
+                  canvas.width - 150, canvas.height / 2,
+                  72, 81);
+  }
 }
 
 export const drawHealth = (ctx, health) => {
@@ -50,9 +52,9 @@ export const drawWPM = (ctx, timer, kills) => {
   ctx.fillStyle = "white";
   ctx.font = 'bold 18px "Roboto Slab"';
   if ((kills/(timer/60))) {
-    ctx.fillText("WPM: " + (kills/(timer/60)).toFixed(2), 480, 50);
+    ctx.fillText("WPM: " + (kills/(timer/60)).toFixed(2), 490, 50);
   } else {
-    ctx.fillText("WPM: 0", 480, 50);
+    ctx.fillText("WPM: 0", 490, 50);
   }
   ctx.fill();
   ctx.closePath();
