@@ -1,8 +1,11 @@
+// const firebase = require("firebase");
+const database = firebase.database();
+console.log(database);
 import Zombie from "./zombie";
 import { drawPlayer, drawHealth, drawKillCount, drawWordList, drawWPM } from "./player";
 import { randomWord } from "./dictionary";
 import { drawStartScreen, drawTitle, drawStartClick } from "./start_screen";
-import { drawGameOver, drawGameOverWPM, drawGameOverKills, drawRestartClick } from './game_over_screen';
+import { drawGameOver, drawGameOverWPM, drawGameOverKills, drawRestartClick, drawHighScores } from './game_over_screen';
 
 document.addEventListener('DOMContentLoaded', () => {
   const page = document.getElementById("page")
@@ -15,6 +18,10 @@ document.addEventListener('DOMContentLoaded', () => {
   let a = 0;
   let b = 0;
   let playerAttack = false;
+  let highScore;
+  firebase.database().ref("highScores").on("value", function (snapshot) {
+    highScore = snapshot.val();
+  });
   
   function spawnZombies() {
     let x = -100;
@@ -171,6 +178,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function gameOver() {
     canvas.addEventListener('click', input.focus())
     input.removeEventListener('keydown', handleZombie);
+    if (killCount > highScore) {
+      firebase.database().ref("highScores").set(killCount);
+    }
     endCounter = 0;
     fade = 0;
     canvas.className = "game-over-screen";
@@ -192,6 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (endCounter >= 10) {
       drawGameOverWPM(ctx, killCount, timer);
+      drawHighScores(ctx, killCount);
     }
     if (endCounter >= 12.5) {
       drawGameOverKills(ctx, killCount);
@@ -207,6 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  
   function startGame(e) {
     if (e.keyCode === 13 || e.button === 0) {
       canvas.removeEventListener('click', startGame);
@@ -222,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
       input.focus();
     }
   }
-
+  
   let titlepos = -60;
   let startCounter = 0;
   function titleDrop() {
