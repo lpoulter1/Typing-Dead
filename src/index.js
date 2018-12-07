@@ -131,11 +131,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function handleZombie(e) {
-    // let submit = false
-    // let value = input.value.trim();
-    // if (e.keyCode === 32 || e.keyCode === 13) {
-    //   submit = true;
-    // }
     if (e.keyCode === 32 || e.keyCode === 13) {
       let value = input.value.trim();
       for (let zomb in zombies) {
