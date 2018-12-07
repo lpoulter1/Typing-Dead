@@ -13,9 +13,9 @@ export const drawGameOverWPM = (ctx, kills, timer) => {
   ctx.fillStyle = "white";
   ctx.font = 'bold 20px "Roboto Slab"';
   if ((kills / (timer / 60))) {
-    ctx.fillText("WPM: " + (kills / (timer / 60)).toFixed(2), (canvas.width / 2) - 100, 200);
+    ctx.fillText("WPM: " + (kills / (timer / 60)).toFixed(2), (canvas.width / 2) - 120, 200);
   } else {
-    ctx.fillText("WPM: 0", (canvas.width / 2) - 100, 200);
+    ctx.fillText("WPM: 0", (canvas.width / 2) - 120, 200);
   }
   ctx.fill();
   ctx.closePath();
@@ -25,7 +25,7 @@ export const drawGameOverKills = (ctx, kills) => {
   ctx.beginPath();
   ctx.fillStyle = "white";
   ctx.font = 'bold 20px "Roboto Slab"';
-  ctx.fillText("Kills: " + `${kills}`, (canvas.width / 2)+120, 200);
+  ctx.fillText("Kills: " + `${kills}`, (canvas.width / 2)+110, 200);
   ctx.fill();
   ctx.closePath();
 }

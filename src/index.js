@@ -202,15 +202,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (endCounter >= 10) {
       drawGameOverWPM(ctx, killCount, timer);
-      drawHighScores(ctx, killCount);
     }
     if (endCounter >= 12.5) {
       drawGameOverKills(ctx, killCount);
     }
     if (endCounter >= 15) {
+      drawHighScores(ctx, killCount);
+    }
+    if (endCounter >= 17.5) {
       canvas.addEventListener('click', startGame)
       page.addEventListener('keydown', startGame)
-      if (endCounter % 10 >= 4) {
+      if (endCounter % 10 >= 5) {
         drawRestartClick(ctx);
       } else {
         null;
