@@ -1,6 +1,3 @@
-// const firebase = require("firebase");
-const database = firebase.database();
-console.log(database);
 import Zombie from "./zombie";
 import { drawPlayer, drawHealth, drawKillCount, drawWordList, drawWPM } from "./player";
 import { randomWord } from "./dictionary";
