@@ -1,3 +1,8 @@
+body {
+  background: url("https://carolinavillalobosblog.files.wordpress.com/2014/10/abandoned-road.jpg");
+  background-size: cover;
+}
+
 .canvas-container {
   width: 800px;
   height: 450px;

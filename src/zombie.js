@@ -42,12 +42,14 @@ class Zombie {
 
   drawText () {
     this.ctx.beginPath();
-      this.ctx.fillStyle = "cyan";
+      this.ctx.fillStyle = "rgba(100, 240, 255)";
       this.ctx.font = 'bold 18px "Roboto Slab"';
       this.ctx.fillText(this.word, this.x, this.y - 7);
       this.ctx.fill();
+      this.ctx.shadowBlur = 3;
+      this.ctx.font = '19px "Roboto Slab"'
       // this.ctx.strokeStyle = "black";
-      // this.ctx.strokeText(this.word, this.x-2, this.y - 7);
+      // this.ctx.strokeText(this.word, this.x, this.y - 7);
       // this.ctx.stroke();
     this.ctx.closePath();
   }
