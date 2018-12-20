@@ -15,6 +15,7 @@ body {
   background: url("https://i.pinimg.com/originals/3c/cd/3b/3ccd3b907039adfdd93f643d4fbdbf97.png");
   background-position-x: right;
   background-size: cover;
+  z-index: 3;
 }
 
 #typing-form {
@@ -69,7 +70,7 @@ body {
 }
 
 .links {
-  position: absolute;
+  position: relative;
   padding: 0;
   bottom: 0;
   left: 0;
@@ -78,11 +79,16 @@ body {
   list-style: none;
   width: 100%;
   justify-content: space-around;
-  font-size: 2em;
+  font-size: 3em;
+  margin: 0;
 }
 
 .links a {
   text-decoration: none;
   color: black;
   font-family: 'Roboto Slab', serif;
+}
+
+.links a:hover {
+  color: red;
 }
