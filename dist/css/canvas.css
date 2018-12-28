@@ -92,3 +92,11 @@ body {
 .links a:hover {
   color: red;
 }
+
+.created-by {
+  font-family: 'Roboto Slab', serif;
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
