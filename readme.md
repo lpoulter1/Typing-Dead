@@ -14,7 +14,31 @@ Typing Dead is a typing game where waves of zombies spawn in from the left and h
 
 ## Architecture and Technologies
 
-Javascript and HTML Canvas
+Javascript, HTML Canvas, and Google Firebase
+
+## Gameplay
+
+Zombies spawn in continuously from the left side of the screen, just outside the canvas's view limit.
+Each zombie is dynamically generated and randomly spawned based on a game timer running in the background.
+As time goes on, a round number increases and this round number determines the frequency of zombie spawns.  
+
+Upon creation, each zombie is given an attached word and an 'alive' toggle. When the word attached to that zombie is typed correctly, the zombie will enter a death animation and it's 'alive' toggle will be changed to 'dead'.
+In the case of multiple zombies with the same words, the one closest to the player character will die.
+
+<img src="https://i.imgur.com/RtTZOoI.png" width="600">
+
+Zombies start huddling towards the player when they get too close. Unfortunately, this means words can become hard to distinguish as they overlap. A list to the right side of the player lists the top 10 closest zombies that have crossed the halfway point and the words attached to them.
+
+
+## Game Over
+
+Upon reaching a high score (number of kills), you are greeted with this screen that allows you to submit your name.
+
+<img src="https://i.imgur.com/9b3hvk7.png" width="500"/>
+
+Doing so will include your name in the high score list on the game over screen, which shows the top 5 high scorers' names, kill counts, and words per minute.
+
+<img src="https://i.imgur.com/YgvFB6Q.png" width="500"/>
 
 ## Implementation Timeline
 
