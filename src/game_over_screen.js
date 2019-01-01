@@ -49,10 +49,11 @@ export const drawHighScores = (ctx, kills) => {
   ctx.beginPath();
   ctx.fillStyle = "lightgreen";
   ctx.textAlign = "center";
-  ctx.font = "bold 16px 'Roboto Slab'";
+  ctx.font = "bold 20px 'Roboto Slab'";
   ctx.fillText("Your score was: " + `${kills}`, canvas.width/2, 180);
   ctx.fillText("High Scores: ", canvas.width/2, 210);
-  let yPos = 230;
+  let yPos = 240;
+  ctx.font = "bold 16px 'Roboto Slab'";
   highScores.forEach(highScore => {
     ctx.textAlign = "left";
     ctx.fillText("Name: " + `${highScore.name}`, (canvas.width/2) - 180, yPos);
