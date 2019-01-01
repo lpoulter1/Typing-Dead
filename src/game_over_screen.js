@@ -51,7 +51,7 @@ export const drawHighScores = (ctx, kills) => {
   ctx.textAlign = "center";
   ctx.font = "bold 14px 'Roboto Slab'";
   ctx.fillText("Your score was: " + `${kills}`, canvas.width/2, 230)
-  ctx.fillText("High Score:" + `${highScore}`, canvas.width/2, 250)
+  ctx.fillText("High Score: " + `${highScore}`, canvas.width/2, 250)
   ctx.fill();
   ctx.closePath();
 
