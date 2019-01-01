@@ -101,3 +101,20 @@ body {
   transform: translate(-50%, -50%);
   font-size: 16px;
 }
+
+#high-score-form {
+  font-family: "Roboto Slab";
+  background-color: honeydew;
+  color: black;
+  position: absolute;
+  border: none;
+  outline: none;
+  left: 50%;
+  bottom: 35%;
+  transform: translate(-50%, -50%);
+  width: 250px;
+  height: 40px;
+  padding: 0;
+  font-size: 24px;
+  text-align: center;
+}
