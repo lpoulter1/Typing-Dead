@@ -1,5 +1,7 @@
 # Typing Dead
 
+### [Live Link](https://ibltsandwich.github.io/Typing-Dead/)
+
 ## MVPs
 
 Typing Dead is a typing game where waves of zombies spawn in from the left and have words attached to them, as the player character defends him/herself from the right. As words are properly typed by the player, the zombie with that word will die, keeping the player safe from harm.
