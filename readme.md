@@ -10,10 +10,6 @@ Typing Dead is a typing game where waves of zombies spawn in from the left and h
  - Players will be able to type to kill zombies
  - Zombies should continuously spawn until the round ends or until the player loses
 
-## Wireframes
-
-![wireframe](https://i.imgur.com/dTvwb07.png)
-
 ## Architecture and Technologies
 
 Javascript, HTML Canvas, and Google Firebase
@@ -41,17 +37,3 @@ Upon reaching a high score (number of kills), you are greeted with this screen t
 Doing so will include your name in the high score list on the game over screen, which shows the top 5 high scorers' names, kill counts, and words per minute.
 
 <img src="https://i.imgur.com/YgvFB6Q.png" width="500"/>
-
-## Implementation Timeline
-
-**Day 1**
-  Figure out how to get the elements I want on the screen, such as the typing form, zombies, player character, and health.  
-  Set up a very basic outline of what I want the game to be.
-
-**Day 2**
-  Hopefully, get zombies to move across the screen with the words attached to them.  
-  Figure out how to get them to die when the correct word is typed.  
-  Get health to go down when zombies reach the player character.
-
-**Day 3**
-  Get artwork, music, and other assets into my project. Work out any bugs that might still exist or pop up.
