@@ -70,7 +70,7 @@ body {
 }
 
 .links {
-  position: relative;
+  position: absolute;
   padding: 0;
   bottom: 0;
   left: 0;
@@ -96,7 +96,7 @@ body {
 .created-by {
   font-family: 'Roboto Slab', serif;
   position: absolute;
-  bottom: 5%;
+  bottom: 7%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 16px;
@@ -117,4 +117,13 @@ body {
   padding: 0;
   font-size: 24px;
   text-align: center;
+}
+
+.game-title {
+  font-family: 'Roboto Slab';
+  text-align: center;
+  font-size: 3.5em;
+  position: relative;
+  top: 0;
+  margin: 0;
 }
