@@ -3,7 +3,7 @@
   "rules": {
     ".read": true,
     ".write": true,
-    ".highScores": {
+    "highScores": {
       ".indexOn": "score"
     }
   }
