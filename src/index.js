@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let now;
   let then = Date.now();
   let interval = 1000 / fps;
+  let interval2 = 1000 / 300;
   let delta;
   let attackTimer;
   
@@ -67,6 +68,8 @@ document.addEventListener('DOMContentLoaded', () => {
     drawWordList(zombies);
     drawWPM(ctx, wpm);
       
+    if (delta > interval2) {
+    then = now - (delta % interval);
     for (let zomb in zombies) {
       let { x } = zombies[zomb];
       if (zombies[zomb].alive) {
@@ -127,6 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     }
+  }
 
     for (let zomb in zombies) {
       if (zombies[zomb].alive) {
