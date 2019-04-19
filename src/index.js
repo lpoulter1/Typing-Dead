@@ -10,8 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const ctx = canvas.getContext("2d");
   const input = document.getElementById('typing-form');
   const wordList = document.getElementById('word-list');
-  let zombies, dx, dy, health, zombieCount, counter, round, 
-  alive, killCount, timer;
+  let zombies, dx, dy, health, zombieCount, counter, round, alive, killCount, timer, now, delta, attackTimer;
   let a = 0;
   let b = 0;
   let playerAttack = false;
@@ -19,14 +18,10 @@ document.addEventListener('DOMContentLoaded', () => {
   firebase.database().ref("highScores").orderByChild('score').limitToLast(5).on("value", function (snapshot) {
     highScores = Object.values(snapshot.val()).sort((a, b) => a.score - b.score);
   });
-  firebase.database().ref("highScores").push
   let fps = 12;
-  let now;
   let then = Date.now();
   let interval = 1000 / fps;
   let interval2 = 1000 / 300;
-  let delta;
-  let attackTimer;
   
   function spawnZombies() {
     let x = -100;
@@ -69,68 +64,68 @@ document.addEventListener('DOMContentLoaded', () => {
     drawWPM(ctx, wpm);
       
     if (delta > interval2) {
-    then = now - (delta % interval);
-    for (let zomb in zombies) {
-      let { x } = zombies[zomb];
-      if (zombies[zomb].alive) {
-        if (x < canvas.width - 200) {
-          zombies[zomb].draw()
-          if (zombies[zomb].x > 350) {
-            if (zombies[zomb].y < canvas.height / 2) {
-              zombies[zomb].dy = 2;
-            } else if (zombies[zomb].y > canvas.height / 2) {
-              zombies[zomb].dy = -2;
-            } else {
-              zombies[zomb].dy = 0;
-            }
-          }
-          if (delta > interval) {
-            then = now - (delta % interval);
-            zombies[zomb].x += dx;
-            zombies[zomb].y += zombies[zomb].dy;
-            zombies[zomb].shift += 100.75;
-            if (zombies[zomb].shift >= 1155) {
-              zombies[zomb].shift = 0;
-            }
-          }
-          Object.values(zombies).forEach((zombie, idx) => {
-            if (idx < parseInt(zomb.slice(6))+3 && idx > parseInt(zomb.slice(6))) {
-              if (zombies[zomb].x >= 20) {
-                if (zombies[zomb].y < zombie.y && zombies[zomb].y > zombie.y - 30) {
-                  zombies[zomb].dy = -1;
-                } else if (zombies[zomb].y <= zombie.y + 30 && zombies[zomb].y >= zombie.y) {
-                  zombies[zomb].dy = 1;
-                } else if (zombies[zomb].y === zombie.y) {
-                  zombies[zomb].dy = 1;
-                } else {
-                  zombies[zomb].dy = 0;
-                }
+      then = now - (delta % interval);
+      for (let zomb in zombies) {
+        let { x } = zombies[zomb];
+        if (zombies[zomb].alive) {
+          if (x < canvas.width - 200) {
+            zombies[zomb].draw()
+            if (zombies[zomb].x > 350) {
+              if (zombies[zomb].y < canvas.height / 2) {
+                zombies[zomb].dy = 2;
+              } else if (zombies[zomb].y > canvas.height / 2) {
+                zombies[zomb].dy = -2;
+              } else {
+                zombies[zomb].dy = 0;
               }
             }
-          })
+            if (delta > interval) {
+              then = now - (delta % interval);
+              zombies[zomb].x += dx;
+              zombies[zomb].y += zombies[zomb].dy;
+              zombies[zomb].shift += 100.75;
+              if (zombies[zomb].shift >= 1155) {
+                zombies[zomb].shift = 0;
+              }
+            }
+            Object.values(zombies).forEach((zombie, idx) => {
+              if (idx < parseInt(zomb.slice(6))+3 && idx > parseInt(zomb.slice(6))) {
+                if (zombies[zomb].x >= 20) {
+                  if (zombies[zomb].y < zombie.y && zombies[zomb].y > zombie.y - 30) {
+                    zombies[zomb].dy = -1;
+                  } else if (zombies[zomb].y <= zombie.y + 30 && zombies[zomb].y >= zombie.y) {
+                    zombies[zomb].dy = 1;
+                  } else if (zombies[zomb].y === zombie.y) {
+                    zombies[zomb].dy = 1;
+                  } else {
+                    zombies[zomb].dy = 0;
+                  }
+                }
+              }
+            })
+          } else {
+            zombies[zomb].drawAttack();
+            if (delta > interval) {
+              then = now - (delta % interval);
+              zombies[zomb].deadShift += 97;
+              if (zombies[zomb].deadShift >= 1140) {
+                zombies[zomb].deadShift = 0;
+              }
+              health -= .3
+            }
+          }
         } else {
-          zombies[zomb].drawAttack();
+          zombies[zomb].drawDead();
           if (delta > interval) {
             then = now - (delta % interval);
             zombies[zomb].deadShift += 97;
-            if (zombies[zomb].deadShift >= 1140) {
-              zombies[zomb].deadShift = 0;
+            if (zombies[zomb].deadShift >= 1250) {
+              zombies[zomb].deadShift = 1254;
             }
-            health -= .3
-          }
-        }
-      } else {
-        zombies[zomb].drawDead();
-        if (delta > interval) {
-          then = now - (delta % interval);
-          zombies[zomb].deadShift += 97;
-          if (zombies[zomb].deadShift >= 1250) {
-            zombies[zomb].deadShift = 1254;
           }
         }
       }
     }
-  }
 
     for (let zomb in zombies) {
       if (zombies[zomb].alive) {
