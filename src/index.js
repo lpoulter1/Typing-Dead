@@ -10,18 +10,63 @@ document.addEventListener('DOMContentLoaded', () => {
   const ctx = canvas.getContext("2d");
   const input = document.getElementById('typing-form');
   const wordList = document.getElementById('word-list');
-  let zombies, dx, dy, health, zombieCount, counter, round, alive, killCount, timer, now, delta, attackTimer;
-  let a = 0;
-  let b = 0;
+
+  let zombies, dx, dy, health, zombieCount, counter, round, alive, killCount, timer, now, delta, attackTimer, wpm;
+  let typeStart = 0;
+  let typeEnd = 0;
   let playerAttack = false;
-  let highScores;
-  firebase.database().ref("highScores").orderByChild('score').limitToLast(5).on("value", function (snapshot) {
-    highScores = Object.values(snapshot.val()).sort((a, b) => a.score - b.score);
-  });
   let fps = 12;
   let then = Date.now();
   let interval = 1000 / fps;
   let interval2 = 1000 / 300;
+  
+  let highScores;
+  firebase.database().ref("highScores").orderByChild('score').limitToLast(5).on("value", function (snapshot) {
+    highScores = Object.values(snapshot.val()).sort((a, b) => a.score - b.score);
+  });
+
+  function resetGame () {
+    zombies = {};
+    dx = 2.5;
+    dy = 0;
+    health = 100;
+    zombieCount = 0;
+    counter = 0;
+    round = 1;
+    alive = true;
+    killCount = 0;
+    timer = 0;
+  }
+
+  function startTimer(e) {
+    if (typeStart === 0 && e.target.value != " ") {
+      typeStart = Date.now();
+    }
+  }
+
+  function handleZombie(e) {
+    if (e.keyCode === 32 || e.keyCode === 13) {
+      let value = input.value.trim();
+      for (let zomb in zombies) {
+        if (value === zombies[zomb].word) {
+          attackTimer = counter;
+          playerAttack = true;
+          killCount += 1;
+          zombies[zomb].word = null;
+          zombies[zomb].alive = false;
+          break;
+        }
+      }
+      input.value = "";
+      if (typeStart > 0) {
+        typeEnd = Date.now();
+        timer += (typeEnd-typeStart)/1000;
+      }
+      typeStart = 0;
+    } else {
+      null
+    }
+  }
   
   function spawnZombies() {
     let x = -100;
@@ -41,7 +86,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  let wpm;
+  function highScoreAnimate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    scoreInput.hidden = false;
+    scoreInput.disabled = false;
+    scoreInput.focus();
+    scoreInput.addEventListener('keydown', handleHighScore)
+    drawStartScreen(ctx, canvas);
+    drawHighScoreInput(ctx, canvas);
+  }
+
+  function handleHighScore(e) {
+    if (e.keyCode === 13) {
+      highScoreName = scoreInput.value;
+      firebase.database().ref("highScores").push({ "name": highScoreName, "score": killCount, 'WPM': wpm })
+      clearInterval(window.highScoreInterval); 
+      scoreInput.removeEventListener('keydown', handleHighScore);
+      scoreInput.hidden = true;
+      scoreInput.disabled = true;
+      scoreInput.value = "";
+      endCounter = 0;
+      fade = 0;
+      canvas.className = "game-over-screen";
+      window.overInterval = setInterval(gameOverAnimate, 100);
+    }
+  }
   
   function renderGame() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -153,49 +222,6 @@ document.addEventListener('DOMContentLoaded', () => {
       gameOver();
     }
   }
-  
-  function startTimer(e) {
-    if (a === 0 && e.target.value != " ") {
-      a = Date.now();
-    }
-  }
-
-  function handleZombie(e) {
-    if (e.keyCode === 32 || e.keyCode === 13) {
-      let value = input.value.trim();
-      for (let zomb in zombies) {
-        if (value === zombies[zomb].word) {
-          attackTimer = counter;
-          playerAttack = true;
-          killCount += 1;
-          zombies[zomb].word = null;
-          zombies[zomb].alive = false;
-          break;
-        }
-      }
-      input.value = "";
-      if (a > 0) {
-        b = Date.now();
-        timer += (b-a)/1000;
-      }
-      a = 0;
-    } else {
-      null
-    }
-  }
-
-  function resetGame () {
-    zombies = {};
-    dx = 2.5;
-    dy = 0;
-    health = 100;
-    zombieCount = 0;
-    counter = 0;
-    round = 1;
-    alive = true;
-    killCount = 0;
-    timer = 0;
-  }
 
   let endCounter = 0;
   let fade = 0;
@@ -216,32 +242,6 @@ document.addEventListener('DOMContentLoaded', () => {
       scoreInput.removeEventListener('keydown', handleHighScore);
       scoreInput.hidden = true;
       scoreInput.disabled = true;
-      endCounter = 0;
-      fade = 0;
-      canvas.className = "game-over-screen";
-      window.overInterval = setInterval(gameOverAnimate, 100);
-    }
-  }
-
-  function highScoreAnimate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    scoreInput.hidden = false;
-    scoreInput.disabled = false;
-    scoreInput.focus();
-    scoreInput.addEventListener('keydown', handleHighScore)
-    drawStartScreen(ctx, canvas);
-    drawHighScoreInput(ctx, canvas);
-  }
-
-  function handleHighScore(e) {
-    if (e.keyCode === 13) {
-      highScoreName = scoreInput.value;
-      firebase.database().ref("highScores").push({ "name": highScoreName, "score": killCount, 'WPM': wpm })
-      clearInterval(window.highScoreInterval); 
-      scoreInput.removeEventListener('keydown', handleHighScore);
-      scoreInput.hidden = true;
-      scoreInput.disabled = true;
-      scoreInput.value = "";
       endCounter = 0;
       fade = 0;
       canvas.className = "game-over-screen";
