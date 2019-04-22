@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const input = document.getElementById('typing-form');
   const wordList = document.getElementById('word-list');
   let zombies, dx, dy, health, zombieCount, counter, round, alive, killCount, timer, now, delta, attackTimer;
-  let a = 0;
-  let b = 0;
+  let typeStart = 0;
+  let typeEnd = 0;
   let playerAttack = false;
   let highScores;
   firebase.database().ref("highScores").orderByChild('score').limitToLast(5).on("value", function (snapshot) {
@@ -155,8 +155,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   function startTimer(e) {
-    if (a === 0 && e.target.value != " ") {
-      a = Date.now();
+    if (typeStart === 0 && e.target.value != " ") {
+      typeStart = Date.now();
     }
   }
 
@@ -174,11 +174,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
       input.value = "";
-      if (a > 0) {
-        b = Date.now();
-        timer += (b-a)/1000;
+      if (typeStart > 0) {
+        typeEnd = Date.now();
+        timer += (typeEnd-typeStart)/1000;
       }
-      a = 0;
+      typeStart = 0;
     } else {
       null
     }
