@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let then = Date.now();
   let interval = 1000 / fps;
   let interval2 = 1000 / 300;
+  let player = new Player(ctx);
   
   let highScores;
   firebase.database().ref("highScores").orderByChild('score').limitToLast(5).on("value", function (snapshot) {
@@ -130,8 +131,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     spawnZombies();
-    Player.drawWordList(zombies);
-    Player.drawWPM(ctx, wpm);
+    player.drawWordList(zombies);
+    player.drawWPM(wpm);
       
     if (delta > interval2) {
       then = now - (delta % interval);
@@ -208,16 +209,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     counter += 10;
 
-    Player.drawKillCount(ctx, killCount);
+    player.drawKillCount(killCount);
     if (health > 0) {
-      Player.drawHealth(ctx, health);
-      Player.draw(ctx, playerAttack);
+      player.drawHealth(health);
+      player.draw(playerAttack);
       if (counter - attackTimer > 50) {
         playerAttack = false;
       }
     } else if (health <= 0) {
       health = 0;
-      Player.drawHealth(ctx, health);
+      player.drawHealth(health);
       clearInterval(window.intervalId);
       cancelAnimationFrame(request)
       gameOver();
