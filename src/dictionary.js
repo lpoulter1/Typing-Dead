@@ -2,7 +2,7 @@
 class Dictionary {
 
   constructor() {
-    const words = ["ability", "able", "about", "above", "accept", "according", "account", "across",
+    this.words = ["ability", "able", "about", "above", "accept", "according", "account", "across",
     "act", "action", "activity", "actually", "add", "address",
     "admit", "adult", "affect", "after", "again", "against", "age", "agency",
     "agent", "ago", "agree", "agreement", "ahead", "air", "all", "allow", "almost",
@@ -133,11 +133,12 @@ class Dictionary {
     "year", "yes", "yet", "you", "young", "your", "yourself",
     "abode", "access"]
   }
-  
+
   randomWord = () => {
-    const randomIdx = Math.floor(Math.random() * words.length)
-    return words[randomIdx]
+    const randomIdx = Math.floor(Math.random() * this.words.length)
+    return this.words[randomIdx]
   }
+  
 }
 
 export default Dictionary;
