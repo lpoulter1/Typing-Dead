@@ -1,5 +1,4 @@
 
-
 class Zombie {
 
   constructor(ctx, word, x, y, dy, alive){
