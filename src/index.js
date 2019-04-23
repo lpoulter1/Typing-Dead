@@ -1,5 +1,6 @@
 import Zombie from "./zombie";
-import { drawPlayer, drawHealth, drawKillCount, drawWordList, drawWPM } from "./player";
+import Player from "./player";
+
 import { randomWord } from "./dictionary";
 import { drawStartScreen, drawTitle, drawStartClick } from "./start_screen";
 import { drawGameOver, drawGameOverWPM, drawGameOverKills, drawRestartClick, drawHighScores, drawHighScoreInput } from './game_over_screen';
@@ -129,8 +130,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     spawnZombies();
-    drawWordList(zombies);
-    drawWPM(ctx, wpm);
+    Player.drawWordList(zombies);
+    Player.drawWPM(ctx, wpm);
       
     if (delta > interval2) {
       then = now - (delta % interval);
@@ -207,16 +208,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     counter += 10;
 
-    drawKillCount(ctx, killCount);
+    Player.drawKillCount(ctx, killCount);
     if (health > 0) {
-      drawHealth(ctx, health);
-      drawPlayer(ctx, playerAttack);
+      Player.drawHealth(ctx, health);
+      Player.draw(ctx, playerAttack);
       if (counter - attackTimer > 50) {
         playerAttack = false;
       }
     } else if (health <= 0) {
       health = 0;
-      drawHealth(ctx, health);
+      Player.drawHealth(ctx, health);
       clearInterval(window.intervalId);
       cancelAnimationFrame(request)
       gameOver();
