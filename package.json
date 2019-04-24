@@ -1,0 +1,23 @@
+{
+  "name": "typing-dead",
+  "version": "1.0.0",
+  "description": "### [Live Link](https://ibltsandwich.github.io/Typing-Dead/)",
+  "main": "index.js",
+  "dependencies": {
+    "firebase": "^5.10.0",
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.1"
+  },
+  "devDependencies": {},
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ibltsandwich/Typing-Dead.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ibltsandwich/Typing-Dead/issues"
+  },
+  "homepage": "https://github.com/ibltsandwich/Typing-Dead#readme"
+}

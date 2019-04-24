@@ -1,7 +1,7 @@
 import Zombie from "./zombie";
 import Player from "./player";
+import Dictionary from "./dictionary";
 
-import { randomWord } from "./dictionary";
 import { drawStartScreen, drawTitle, drawStartClick } from "./start_screen";
 import { drawGameOver, drawGameOverWPM, drawGameOverKills, drawRestartClick, drawHighScores, drawHighScoreInput } from './game_over_screen';
 
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     let randomSpawn = Math.floor(Math.random() * 2.5) + (250 - round);
     if (counter % randomSpawn <= 2) {
-      zombies[`zombie${zombieCount}`] = new Zombie(ctx, randomWord(), x, y, dy, alive);
+      zombies[`zombie${zombieCount}`] = new Zombie(ctx, Dictionary.randomWord(), x, y, dy, alive);
       zombieCount += 1;
     }
   }
