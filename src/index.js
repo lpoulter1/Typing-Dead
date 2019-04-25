@@ -10,7 +10,6 @@ import StartScreen from "./start_screen";
 //
 // subtract roundTimer by certain amount after certain amount of time
 
-import { drawStartScreen, drawTitle, drawStartClick } from "./start_screen";
 import { drawGameOver, drawGameOverWPM, drawGameOverKills, drawRestartClick, drawHighScores, drawHighScoreInput } from './game_over_screen';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -317,14 +316,14 @@ document.addEventListener('DOMContentLoaded', () => {
       titlepos = 140;
       startCounter += .5;
       if (startCounter % 10 <= 6) {
-        drawStartClick(ctx);
+        startScreen.drawStartClick();
       } else {
         null;
       }
       canvas.addEventListener('click', startGame)
       page.addEventListener('keydown', startGame)
     }
-    drawTitle(ctx, titlepos);
+    startScreen.drawTitle(titlepos);
   }
   if (canvas.className === "start-screen") {
     startScreen.draw();
