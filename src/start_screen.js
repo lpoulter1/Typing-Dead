@@ -1,34 +1,35 @@
-// class StartScreen {
-//   constructor(ctx) {
-//     this.ctx = ctx;
-//   }
-
-  export const drawStartScreen = (ctx, canvas) => {
-    ctx.beginPath();
-      ctx.rect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
-      ctx.fill();
-    ctx.closePath();
+class StartScreen {
+  constructor(ctx, canvas) {
+    this.ctx = ctx;
+    this.canvas = canvas;
   }
 
-  export const drawTitle = (ctx, y) => {
-    ctx.beginPath();
-      ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
-      ctx.font = 'bold 72px "Roboto Slab"';
-      ctx.textAlign = "center"; 
-      ctx.fillText("Typing Dead", (canvas.width/2), y);
-      ctx.fill();
-    ctx.closePath();
+  drawStartScreen = () => {
+    this.ctx.beginPath();
+      this.ctx.rect(0, 0, canvas.width, canvas.height);
+      this.ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
+      this.ctx.fill();
+    this.ctx.closePath();
   }
 
-  export const drawStartClick = (ctx) => {
-    ctx.beginPath();
-      ctx.fillStyle = "red";
-      // ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
-      ctx.font = 'bold 36px "Roboto Slab"';
-      ctx.textAlign = "center"; 
-      ctx.fillText("Click or Press Enter to Start", (canvas.width / 2), 300);
-      ctx.fill();
-    ctx.closePath();
+  drawTitle = (y) => {
+    this.ctx.beginPath();
+      this.ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
+      this.ctx.font = 'bold 72px "Roboto Slab"';
+      this.ctx.textAlign = "center"; 
+      this.ctx.fillText("Typing Dead", (canvas.width/2), y);
+      this.ctx.fill();
+    this.ctx.closePath();
   }
-// }
+
+  drawStartClick = () => {
+    this.ctx.beginPath();
+      this.ctx.fillStyle = "red";
+      // this.ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
+      this.ctx.font = 'bold 36px "Roboto Slab"';
+      this.ctx.textAlign = "center"; 
+      this.ctx.fillText("Click or Press Enter to Start", (canvas.width / 2), 300);
+      this.ctx.fill();
+    this.ctx.closePath();
+  }
+}

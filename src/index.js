@@ -1,8 +1,14 @@
 import Zombie from "./zombie";
 import Player from "./player";
 import Dictionary from "./dictionary";
+import StartScreen from "./start_screen";
 
 // *** SPAWNING OF ZOMBIES SHOULD BE TIED TO TIME NOT FPS!! ***
+// let spawn zombies run on its own timer and not tied to requestAnimationFrame
+//
+// setInterval(spawnZombies(), roundTimer)
+//
+// subtract roundTimer by certain amount after certain amount of time
 
 import { drawStartScreen, drawTitle, drawStartClick } from "./start_screen";
 import { drawGameOver, drawGameOverWPM, drawGameOverKills, drawRestartClick, drawHighScores, drawHighScoreInput } from './game_over_screen';
@@ -14,6 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const input = document.getElementById('typing-form');
   const wordList = document.getElementById('word-list');
 
+  let player = new Player(ctx);
+  let dictionary = new Dictionary();
+  let startScreen = new StartScreen(ctx, canvas);
   let zombies, dx, dy, health, zombieCount, counter, round, alive, killCount, timer, now, delta, attackTimer, wpm;
   let typeStart = 0;
   let typeEnd = 0;
@@ -22,8 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let then = Date.now();
   let interval = 1000 / fps;
   let interval2 = 1000 / 300;
-  let player = new Player(ctx);
-  let dictionary = new Dictionary();
   
   let highScores;
   firebase.database().ref("highScores").orderByChild('score').limitToLast(5).on("value", function (snapshot) {
@@ -97,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
     scoreInput.disabled = false;
     scoreInput.focus();
     scoreInput.addEventListener('keydown', handleHighScore)
-    drawStartScreen(ctx, canvas);
+    startScreen.draw();
     drawHighScoreInput(ctx, canvas);
   }
 
@@ -256,7 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function gameOverAnimate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawStartScreen(ctx, canvas);
+    startScreen.draw();
     drawGameOver(ctx, fade);
     
     fade += .05;
@@ -304,7 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let startCounter = 0;
   function titleDrop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawStartScreen(ctx, canvas);
+    startScreen.draw();
     titlepos += 5;
     if (titlepos >= 140) {
       titlepos = 140;
@@ -320,7 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
     drawTitle(ctx, titlepos);
   }
   if (canvas.className === "start-screen") {
-    drawStartScreen(ctx, canvas);
+    startScreen.draw();
     input.style.display = "none";
     window.startInterval = setInterval(titleDrop, 70);
   }
