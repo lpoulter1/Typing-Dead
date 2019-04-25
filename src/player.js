@@ -4,10 +4,10 @@ class Player {
   constructor(ctx) {
     this.ctx = ctx;
     this.playerImg = newImage();
-    playerImg.src = "../../Typing-Dead/public/assets/player.png";
+    playerImg.src = "../public/assets/player.png";
   }
 
-  draw = (attack) => {
+  draw(attack) {
     if (attack) {
       this.ctx.drawImage(this.playerImg,
                     225, 239,
@@ -23,7 +23,7 @@ class Player {
     }
   }
 
-  drawHealth = (health) => {
+  drawHealth(health) {
     this.ctx.beginPath();
       this.ctx.fillStyle = "white";
       this.ctx.font = 'bold 18px "Roboto Slab"';
@@ -32,7 +32,7 @@ class Player {
     this.ctx.closePath();
   }
 
-  drawKillCount = (killCount) => {
+  drawKillCount(killCount) {
     this.ctx.beginPath();
       this.ctx.fillStyle = "white";
       this.ctx.font = 'bold 18px "Roboto Slab"';
@@ -41,7 +41,7 @@ class Player {
     this.ctx.closePath();
   }
 
-  drawWordList = (zombies) => {
+  drawWordList(zombies) {
     let list = document.getElementById("word-list");
     list.innerHTML = "";
 
@@ -54,7 +54,7 @@ class Player {
     })
   }
 
-  drawWPM = (wpm) => {
+  drawWPM(wpm) {
     this.ctx.beginPath();
       this.ctx.fillStyle = "white";
       this.ctx.font = 'bold 18px "Roboto Slab"';

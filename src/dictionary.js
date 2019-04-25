@@ -134,7 +134,7 @@ class Dictionary {
     "abode", "access"]
   }
 
-  randomWord = () => {
+  randomWord() {
     const randomIdx = Math.floor(Math.random() * this.words.length)
     return this.words[randomIdx]
   }
