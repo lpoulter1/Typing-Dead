@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let interval = 1000 / fps;
   let interval2 = 1000 / 300;
   let player = new Player(ctx);
+  let dictionary = new Dictionary();
   
   let highScores;
   firebase.database().ref("highScores").orderByChild('score').limitToLast(5).on("value", function (snapshot) {
@@ -83,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     let randomSpawn = Math.floor(Math.random() * 2.5) + (250 - round);
     if (counter % randomSpawn <= 2) {
-      zombies[`zombie${zombieCount}`] = new Zombie(ctx, Dictionary.randomWord(), x, y, dy, alive);
+      zombies[`zombie${zombieCount}`] = new Zombie(ctx, dictionary.randomWord(), x, y, dy, alive);
       zombieCount += 1;
     }
   }

@@ -3,8 +3,8 @@ class Player {
 
   constructor(ctx) {
     this.ctx = ctx;
-    this.playerImg = newImage();
-    playerImg.src = "../public/assets/player.png";
+    this.playerImg = new Image();
+    this.playerImg.src = "./public/images/player.png";
   }
 
   draw(attack) {
