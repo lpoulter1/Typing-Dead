@@ -2,6 +2,8 @@ import Zombie from "./zombie";
 import Player from "./player";
 import Dictionary from "./dictionary";
 
+// *** SPAWNING OF ZOMBIES SHOULD BE TIED TO TIME NOT FPS!! ***
+
 import { drawStartScreen, drawTitle, drawStartClick } from "./start_screen";
 import { drawGameOver, drawGameOverWPM, drawGameOverKills, drawRestartClick, drawHighScores, drawHighScoreInput } from './game_over_screen';
 
