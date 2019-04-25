@@ -9,7 +9,10 @@
     "webpack-cli": "^3.3.1"
   },
   "devDependencies": {},
-  "scripts": {},
+  "scripts": {
+    "start": "firebase serve --only hosting",
+    "webpack": "webpack --watch --mode=development"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ibltsandwich/Typing-Dead.git"

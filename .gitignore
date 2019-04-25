@@ -1,4 +1,4 @@
 main.js
 .DS_Store
-.firebase
+.firebase/
 node_modules/

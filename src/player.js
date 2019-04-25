@@ -4,7 +4,7 @@ class Player {
   constructor(ctx) {
     this.ctx = ctx;
     this.playerImg = newImage();
-    playerImg.src = "../Typing-Dead/assets/player.png";
+    playerImg.src = "../../Typing-Dead/public/assets/player.png";
   }
 
   draw = (attack) => {

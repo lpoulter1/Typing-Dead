@@ -1,0 +1,24 @@
+[debug] [2019-04-25T00:04:11.092Z] ----------------------------------------------------------------------
+[debug] [2019-04-25T00:04:11.095Z] Command:       /Users/blt/.nvm/versions/node/v6.10.1/bin/node /Users/blt/.nvm/versions/node/v6.10.1/bin/firebase serve --only hosting
+[debug] [2019-04-25T00:04:11.096Z] CLI Version:   6.7.1
+[debug] [2019-04-25T00:04:11.096Z] Platform:      darwin
+[debug] [2019-04-25T00:04:11.096Z] Node Version:  v6.10.1
+[debug] [2019-04-25T00:04:11.097Z] Time:          Wed Apr 24 2019 20:04:11 GMT-0400 (EDT)
+[debug] [2019-04-25T00:04:11.097Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-04-25T00:04:11.114Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-04-25T00:04:11.114Z] > authorizing via signed-in user
+[debug] [2019-04-25T00:04:11.115Z] [iam] checking project typing-dead for permissions ["firebase.projects.get"]
+[debug] [2019-04-25T00:04:11.117Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/typing-dead:testIamPermissions  
+
+[debug] [2019-04-25T00:04:11.410Z] <<< HTTP RESPONSE 200
+[debug] [2019-04-25T00:04:11.414Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/typing-dead  
+ 
+[debug] [2019-04-25T00:04:11.647Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from '/Users/blt/Desktop/appAcademy/Typing-Dead'...
+[info] 
+[debug] [2019-04-25T00:04:11.659Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/563678855735/clients/_:getWebAppConfig  
+ 
+[debug] [2019-04-25T00:04:11.910Z] <<< HTTP RESPONSE 200
+[info] ✔  hosting: Local server: http://localhost:5000
