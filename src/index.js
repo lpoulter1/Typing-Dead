@@ -1,3 +1,4 @@
+import Game from './game';
 import Zombie from "./zombie";
 import Player from "./player";
 import Dictionary from "./dictionary";
@@ -22,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const dictionary = new Dictionary();
   const startScreen = new StartScreen(ctx, canvas);
   const gameOverScreen = new GameOverScreen(ctx, canvas);
+  const game = new Game(page, ctx, canvas, wordList, input, player, dictionary)
 
   let zombies, dx, dy, health, zombieCount, counter, round, alive, killCount, timer, now, delta, attackTimer, wpm;
   let typeStart = 0;
