@@ -2,6 +2,7 @@ import Zombie from "./zombie";
 import Player from "./player";
 import Dictionary from "./dictionary";
 import StartScreen from "./start_screen";
+import GameOverScreen from "./game_over_screen";
 
 // *** SPAWNING OF ZOMBIES SHOULD BE TIED TO TIME NOT FPS!! ***
 // let spawn zombies run on its own timer and not tied to requestAnimationFrame
@@ -19,9 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const input = document.getElementById('typing-form');
   const wordList = document.getElementById('word-list');
 
-  let player = new Player(ctx);
-  let dictionary = new Dictionary();
-  let startScreen = new StartScreen(ctx, canvas);
+  const player = new Player(ctx);
+  const dictionary = new Dictionary();
+  const startScreen = new StartScreen(ctx, canvas);
+  const gameOverScreen = new GameOverScreen(ctx);
+
   let zombies, dx, dy, health, zombieCount, counter, round, alive, killCount, timer, now, delta, attackTimer, wpm;
   let typeStart = 0;
   let typeEnd = 0;
@@ -263,7 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function gameOverAnimate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     startScreen.draw();
-    drawGameOver(ctx, fade);
+    gameOverScreen.drawGameOver(fade);
     
     fade += .05;
     endCounter += .5;
@@ -271,10 +274,10 @@ document.addEventListener('DOMContentLoaded', () => {
       fade = 1;
     }
     if (endCounter >= 10) {
-      drawGameOverWPM(ctx, wpm);
+      gameOverScreen.drawGameOverWPM(wpm);
     }
     if (endCounter >= 12.5) {
-      drawGameOverKills(ctx, killCount);
+      gameOverScreen.drawGameOverKills(killCount);
     }
     if (endCounter >= 15) {
       drawHighScores(ctx, killCount);

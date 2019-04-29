@@ -32,3 +32,5 @@ class StartScreen {
     this.ctx.closePath();
   }
 }
+
+export default StartScreen;
