@@ -1,6 +1,7 @@
 class GameOverScreen {
-  constructor(ctx) {
+  constructor(ctx, canvas) {
     this.ctx = ctx;
+    this.canvas = canvas;
   }
 
   drawGameOver(fade) {
@@ -45,7 +46,7 @@ class GameOverScreen {
     this.ctx.closePath();
   }
 
-  drawHighScores(kills) {
+  drawHighScores(killCount) {
     let highScores;
     firebase.database().ref("highScores").orderByChild('score').limitToLast(5).on("value", function (snapshot) {
       highScores = Object.values(snapshot.val()).sort((a, b) => b.score - a.score);
@@ -55,8 +56,9 @@ class GameOverScreen {
       this.ctx.fillStyle = "lightgreen";
       this.ctx.textAlign = "center";
       this.ctx.font = "bold 20px 'Roboto Slab'";
-      this.ctx.fillText("Your score was: " + `${kills}`, canvas.width/2, 180);
+      this.ctx.fillText("Your score was: " + `${killCount}`, canvas.width/2, 180);
       this.ctx.fillText("High Scores: ", canvas.width/2, 210);
+
       let yPos = 240;
       this.ctx.font = "bold 16px 'Roboto Slab'";
       highScores.forEach(highScore => {
@@ -73,14 +75,14 @@ class GameOverScreen {
 
   }
 
-  drawHighScoreInput(canvas) {
+  drawHighScoreInput() {
     this.ctx.beginPath();
       this.ctx.fillStyle = "lightgreen";
       this.ctx.textAlign = "center";
       this.ctx.font = 'bold 44px "Roboto Slab"';
-      this.ctx.fillText("You've reached a high score!", canvas.width/2, 150)
+      this.ctx.fillText("You've reached a high score!", this.canvas.width/2, 150)
       this.ctx.font = 'bold 32px "Roboto Slab"';
-      this.ctx.fillText("Type in your name: ", canvas.width/2, 200);
+      this.ctx.fillText("Type in your name: ", this.canvas.width/2, 200);
       this.ctx.fill();
     this.ctx.closePath();
   }

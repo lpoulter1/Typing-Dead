@@ -11,8 +11,6 @@ import GameOverScreen from "./game_over_screen";
 //
 // subtract roundTimer by certain amount after certain amount of time
 
-import { drawGameOver, drawGameOverWPM, drawGameOverKills, drawRestartClick, drawHighScores, drawHighScoreInput } from './game_over_screen';
-
 document.addEventListener('DOMContentLoaded', () => {
   const page = document.getElementById("page")
   const canvas = document.getElementById("canvas");
@@ -23,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const player = new Player(ctx);
   const dictionary = new Dictionary();
   const startScreen = new StartScreen(ctx, canvas);
-  const gameOverScreen = new GameOverScreen(ctx);
+  const gameOverScreen = new GameOverScreen(ctx, canvas);
 
   let zombies, dx, dy, health, zombieCount, counter, round, alive, killCount, timer, now, delta, attackTimer, wpm;
   let typeStart = 0;
@@ -107,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
     scoreInput.focus();
     scoreInput.addEventListener('keydown', handleHighScore)
     startScreen.draw();
-    drawHighScoreInput(ctx, canvas);
+    gameOverScreen.drawHighScoreInput(canvas);
   }
 
   function handleHighScore(e) {
@@ -280,13 +278,13 @@ document.addEventListener('DOMContentLoaded', () => {
       gameOverScreen.drawGameOverKills(killCount);
     }
     if (endCounter >= 15) {
-      drawHighScores(ctx, killCount);
+      gameOverScreen.drawHighScores(killCount);
     }
     if (endCounter >= 17.5) {
       canvas.addEventListener('click', startGame)
       page.addEventListener('keydown', startGame)
       if (endCounter % 10 >= 5) {
-        drawRestartClick(ctx);
+        gameOverScreen.drawRestartClick();
       } else {
         null;
       }
