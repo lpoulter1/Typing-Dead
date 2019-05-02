@@ -33,11 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let then = Date.now();
   let interval = 1000 / fps;
   let interval2 = 1000 / 300;
-  
-  let highScores;
-  firebase.database().ref("highScores").orderByChild('score').limitToLast(5).on("value", function (snapshot) {
-    highScores = Object.values(snapshot.val()).sort((a, b) => a.score - b.score);
-  });
 
   function resetGame () {
     zombies = {};

@@ -51,6 +51,7 @@ class GameOverScreen {
     firebase.database().ref("highScores").orderByChild('score').limitToLast(5).on("value", function (snapshot) {
       highScores = Object.values(snapshot.val()).sort((a, b) => b.score - a.score);
     });
+    console.log(highScores);
 
     this.ctx.beginPath();
       this.ctx.fillStyle = "lightgreen";
