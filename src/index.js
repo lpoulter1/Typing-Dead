@@ -5,13 +5,6 @@ import Dictionary from "./dictionary";
 import StartScreen from "./start_screen";
 import GameOverScreen from "./game_over_screen";
 
-// *** SPAWNING OF ZOMBIES SHOULD BE TIED TO TIME NOT FPS!! ***
-// let spawn zombies run on its own timer and not tied to requestAnimationFrame
-//
-// setInterval(spawnZombies(), roundTimer)
-//
-// subtract roundTimer by certain amount after certain amount of time
-
 document.addEventListener('DOMContentLoaded', () => {
   const page = document.getElementById("page")
   const canvas = document.getElementById("canvas");
