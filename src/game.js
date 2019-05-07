@@ -1,27 +1,29 @@
 import Zombie from './zombie';
 import Player from './player';
 import Dictionary from './dictionary';
+import GameOverScreen from './game_over_screen';
 
 class Game {
-  constructor(page, ctx, canvas, wordList, input) {
+  constructor(page, ctx, canvas, wordList, input, scoreInput, highScores) {
     this.page = page;
     this.ctx = ctx;
     this.canvas = canvas;
     this.wordList = wordList;
     this.input = input;
+    this.scoreInput = scoreInput;
+    this.highScores = highScores
 
-    this.player = new Player(this.ctx);
+    this.player = new Player(ctx);
     this.dictionary = new Dictionary();
+    this.gameOverScreen = new GameOverScreen(page, ctx, canvas, input, scoreInput, wordList, highScores);
 
     this.zombies = {};
     this.dx = 2.5;
     this.dy = 0;
-    this.health = 100;
     this.zombieCount = 0;
     this.counter = 0;
     this.round = 1;
     this.alive = true;
-    this.killCount = 0;
     this.inputTimer = 0;
     this.attackTimer;
     this.typeStart = 0;
@@ -35,12 +37,12 @@ class Game {
     this.zombies = {};
     this.dx = 2.5;
     this.dy = 0;
-    this.health = 100;
+    this.player.health = 100;
     this.zombieCount = 0;
     this.counter = 0;
     this.round = 1;
     this.alive = true;
-    this.killCount = 0;
+    this.player.killCount = 0;
   }
 
   spawnZombies() {
@@ -88,28 +90,6 @@ class Game {
       }
       this.typeStart = 0;
     } 
-  }
-
-  gameOver() {
-    this.canvas.removeEventListener('click', this.input.focus())
-    this.input.removeEventListener('keydown', this.handleZombie);
-    this.input.removeEventListener('input', this.startTimer)
-    this.wordList.innerHTML = "";
-    this.input.value = "";
-    this.input.disabled = true;
-    this.input.style.display = "none";
-
-    if (this.killCount > highScores[0].score || (highScores.length < 5 && killCount > 0)) {
-      window.highScoreInterval = setInterval(highScoreAnimate, 100);
-    } else {
-      scoreInput.removeEventListener('keydown', handleHighScore);
-      scoreInput.hidden = true;
-      scoreInput.disabled = true;
-      endCounter = 0;
-      fade = 0;
-      canvas.className = "game-over-screen";
-      window.overInterval = setInterval(gameOverAnimate, 100);
-    }
   }
 
   render() {
@@ -228,7 +208,7 @@ class Game {
       this.player.drawHealth();
       clearInterval(window.intervalId);
       cancelAnimationFrame(request)
-      gameOver();
+      gameOverScreen.gameOver(this.player.wpm, this.player.killCount);
     }
   }
 }

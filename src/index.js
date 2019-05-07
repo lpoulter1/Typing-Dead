@@ -10,9 +10,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const wordList = document.getElementById('word-list');
   const scoreInput = document.getElementById('high-score-form');
 
+  let highScores;
+  firebase.database().ref("highScores").orderByChild('score').limitToLast(5).on("value", function (snapshot) {
+    highScores = Object.values(snapshot.val()).sort((a, b) => b.score - a.score);
+  });
+
   const startScreen = new StartScreen(ctx, canvas);
-  const gameOverScreen = new GameOverScreen(ctx, canvas);
-  const game = new Game(page, ctx, canvas, wordList, input)
+  const gameOverScreen = new GameOverScreen(ctx, canvas, input, scoreInput, wordList, highScores);
+  const game = new Game(page, ctx, canvas, wordList, input, scoreInput, highScores)
 
   function highScoreAnimate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -37,117 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
       fade = 0;
       canvas.className = "game-over-screen";
       window.overInterval = setInterval(gameOverAnimate, 100);
-    }
-  }
-  
-  function renderGame() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    canvas.addEventListener('click', input.focus())
-    input.addEventListener('keydown', handleZombie);
-    input.addEventListener('input', startTimer);
-    let request = requestAnimationFrame(renderGame);
-    
-    now = Date.now();
-    delta = now - then;
-    
-    if ((killCount / (timer / 60))) {
-      wpm = (killCount / (timer / 60)).toFixed(2);
-    } else {
-      wpm = 0;
-    }
-
-    spawnZombies();
-    player.drawWordList(zombies);
-    player.drawWPM(wpm);
-      
-    if (delta > interval2) {
-      then = now - (delta % interval);
-      for (let zomb in zombies) {
-        let { x } = zombies[zomb];
-        if (zombies[zomb].alive) {
-          if (x < canvas.width - 200) {
-            zombies[zomb].draw()
-            if (zombies[zomb].x > 350) {
-              if (zombies[zomb].y < canvas.height / 2) {
-                zombies[zomb].dy = 2;
-              } else if (zombies[zomb].y > canvas.height / 2) {
-                zombies[zomb].dy = -2;
-              } else {
-                zombies[zomb].dy = 0;
-              }
-            }
-            if (delta > interval) {
-              then = now - (delta % interval);
-              zombies[zomb].x += dx;
-              zombies[zomb].y += zombies[zomb].dy;
-              zombies[zomb].shift += 100.75;
-              if (zombies[zomb].shift >= 1155) {
-                zombies[zomb].shift = 0;
-              }
-            }
-            Object.values(zombies).forEach((zombie, idx) => {
-              if (idx < parseInt(zomb.slice(6))+3 && idx > parseInt(zomb.slice(6))) {
-                if (zombies[zomb].x >= 20) {
-                  if (zombies[zomb].y < zombie.y && zombies[zomb].y > zombie.y - 30) {
-                    zombies[zomb].dy = -1;
-                  } else if (zombies[zomb].y <= zombie.y + 30 && zombies[zomb].y >= zombie.y) {
-                    zombies[zomb].dy = 1;
-                  } else if (zombies[zomb].y === zombie.y) {
-                    zombies[zomb].dy = 1;
-                  } else {
-                    zombies[zomb].dy = 0;
-                  }
-                }
-              }
-            })
-          } else {
-            zombies[zomb].drawAttack();
-            if (delta > interval) {
-              then = now - (delta % interval);
-              zombies[zomb].deadShift += 97;
-              if (zombies[zomb].deadShift >= 1140) {
-                zombies[zomb].deadShift = 0;
-              }
-              health -= .3
-            }
-          }
-        } else {
-          zombies[zomb].drawDead();
-          if (delta > interval) {
-            then = now - (delta % interval);
-            zombies[zomb].deadShift += 97;
-            if (zombies[zomb].deadShift >= 1250) {
-              zombies[zomb].deadShift = 1254;
-            }
-          }
-        }
-      }
-    }
-
-    for (let zomb in zombies) {
-      if (zombies[zomb].alive) {
-        zombies[zomb].drawText()
-      }
-    }
-
-    if (counter % 1000 === 0) {
-      round += .5
-    }
-    counter += 10;
-
-    player.drawKillCount(killCount);
-    if (health > 0) {
-      player.drawHealth(health);
-      player.draw(playerAttack);
-      if (counter - attackTimer > 50) {
-        playerAttack = false;
-      }
-    } else if (health <= 0) {
-      health = 0;
-      player.drawHealth(health);
-      clearInterval(window.intervalId);
-      cancelAnimationFrame(request)
-      gameOver();
     }
   }
 

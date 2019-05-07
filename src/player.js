@@ -7,6 +7,7 @@ class Player {
     this.health = 100;
     this.playerAttack = false;
     this.wpm;
+    this.killCount = 0;
   }
 
   set health(newHealth) {
@@ -19,6 +20,10 @@ class Player {
 
   set playerAttack(newPlayerAttack) {
     this.playerAttack = newPlayerAttack;
+  }
+
+  set killCount(newKillCount) {
+    this.killCount = newKillCount;
   }
 
   draw() {
