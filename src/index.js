@@ -205,7 +205,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (counter % 1000 === 0) {
       round += .5
     }
-    counter += 10;
+    // counter += 10;
+
+    setInterval(() => {
+      counter += 10
+    }, 10)
 
     drawKillCount(ctx, killCount);
     if (health > 0) {
