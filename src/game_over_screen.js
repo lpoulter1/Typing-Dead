@@ -12,6 +12,7 @@ class GameOverScreen {
     this.endCounter = 0;
     this.killCount;
     this.wpm;
+    this.highScoreName;
 
     this.drawGameOver = this.drawGameOver.bind(this);
     this.drawGameOverWPM = this.drawGameOverWPM.bind(this);
@@ -161,11 +162,29 @@ class GameOverScreen {
     this.scoreInput.hidden = false;
     this.scoreInput.disabled = false;
     this.scoreInput.focus();
-    this.scoreInput.addEventListener('keydown', handleHighScore)
+    this.scoreInput.addEventListener('keydown', this.handleHighScore)
     startScreen.draw();
     this.drawHighScoreInput();
   }
 
+
+  handleHighScore(e) {
+    if (e.keyCode === 13) {
+      this.highScoreName = this.scoreInput.value;
+
+      firebase.database().ref("highScores").push({ "name": highScoreName, "score": killCount, 'WPM': wpm })
+      clearInterval(window.highScoreInterval); 
+
+      this.scoreInput.removeEventListener('keydown', this.handleHighScore);
+      this.scoreInput.hidden = true;
+      this.scoreInput.disabled = true;
+      this.scoreInput.value = "";
+      this.endCounter = 0;
+      this.fade = 0;
+      this.canvas.className = "game-over-screen";
+      window.overInterval = setInterval(this.gameOverAnimate, 100);
+    }
+  }
 
 }
 
