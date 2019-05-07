@@ -5,18 +5,24 @@ class Player {
     this.playerImg = new Image();
     this.playerImg.src = "./public/images/player.png";
     this.health = 100;
-  }
-
-  get health() {
-    return this.health;
+    this.playerAttack = false;
+    this.wpm;
   }
 
   set health(newHealth) {
     this.health = newHealth;
   }
 
-  draw(attack) {
-    if (attack) {
+  set wpm(newWPM) {
+    this.wpm = newWPM;
+  }
+
+  set playerAttack(newPlayerAttack) {
+    this.playerAttack = newPlayerAttack;
+  }
+
+  draw() {
+    if (this.playerAttack) {
       this.ctx.drawImage(this.playerImg,
                     225, 239,
                     72, 81,
@@ -62,13 +68,13 @@ class Player {
     })
   }
 
-  drawWPM(wpm) {
+  drawWPM() {
     this.ctx.beginPath();
       this.ctx.fillStyle = "white";
       this.ctx.font = 'bold 18px "Roboto Slab"';
 
-      if (wpm) {
-        this.ctx.fillText("WPM: " + wpm, 480, 50);
+      if (this.wpm) {
+        this.ctx.fillText("WPM: " + this.wpm, 480, 50);
       } else {
         this.ctx.fillText("WPM: 0", 480, 50);
       }

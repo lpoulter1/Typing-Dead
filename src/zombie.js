@@ -10,6 +10,7 @@ class Zombie {
     this.shift = 0;
     this.deadShift = 575;
     this.alive = alive;
+    
     this.zombieImg = new Image();
     this.zombieImg.src = "./public/images/zombie.png";
   }

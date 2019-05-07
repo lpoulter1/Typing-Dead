@@ -1,5 +1,4 @@
 import Game from './game';
-import Dictionary from "./dictionary";
 import StartScreen from "./start_screen";
 import GameOverScreen from "./game_over_screen";
 
@@ -9,81 +8,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const ctx = canvas.getContext("2d");
   const input = document.getElementById('typing-form');
   const wordList = document.getElementById('word-list');
+  const scoreInput = document.getElementById('high-score-form');
 
-  const dictionary = new Dictionary();
   const startScreen = new StartScreen(ctx, canvas);
   const gameOverScreen = new GameOverScreen(ctx, canvas);
   const game = new Game(page, ctx, canvas, wordList, input)
-
-  let zombies, dx, dy, health, zombieCount, counter, round, alive, killCount, timer, now, delta, attackTimer, wpm;
-  let typeStart = 0;
-  let typeEnd = 0;
-  let playerAttack = false;
-  let fps = 12;
-  let then = Date.now();
-  let interval = 1000 / fps;
-  let interval2 = 1000 / 300;
-
-  function resetGame () {
-    zombies = {};
-    dx = 2.5;
-    dy = 0;
-    health = 100;
-    zombieCount = 0;
-    counter = 0;
-    round = 1;
-    alive = true;
-    killCount = 0;
-    timer = 0;
-  }
-
-  function startTimer(e) {
-    if (typeStart === 0 && e.target.value != " ") {
-      typeStart = Date.now();
-    }
-  }
-
-  function handleZombie(e) {
-    if (e.keyCode === 32 || e.keyCode === 13) {
-      let value = input.value.trim();
-      for (let zomb in zombies) {
-        if (value === zombies[zomb].word) {
-          attackTimer = counter;
-          playerAttack = true;
-          killCount += 1;
-          zombies[zomb].word = null;
-          zombies[zomb].alive = false;
-          break;
-        }
-      }
-      input.value = "";
-      if (typeStart > 0) {
-        typeEnd = Date.now();
-        timer += (typeEnd-typeStart)/1000;
-      }
-      typeStart = 0;
-    } else {
-      null
-    }
-  }
-  
-  function spawnZombies() {
-    let x = -100;
-    let y = Math.floor(Math.random() * (canvas.height-150)) + 50;
-    
-    for (let zomb in zombies) {
-      if (zombies[zomb].x <= 150) {
-        while (y < zombies[zomb].y + 100 && y > zombies[zomb].y - 100) {
-          y = Math.floor(Math.random() * (canvas.height-150)) + 50;
-        }
-      }
-    }
-    let randomSpawn = Math.floor(Math.random() * 2.5) + (250 - round);
-    if (counter % randomSpawn <= 2) {
-      zombies[`zombie${zombieCount}`] = new Zombie(ctx, dictionary.randomWord(), x, y, dy, alive);
-      zombieCount += 1;
-    }
-  }
 
   function highScoreAnimate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -224,7 +153,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let endCounter = 0;
   let fade = 0;
-  const scoreInput = document.getElementById('high-score-form');
 
   let highScoreName;
   function gameOver() {
@@ -313,6 +241,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     startScreen.drawTitle(titlepos);
   }
+
+
+
+  
   if (canvas.className === "start-screen") {
     startScreen.draw();
     input.style.display = "none";

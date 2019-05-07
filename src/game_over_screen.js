@@ -2,6 +2,7 @@ class GameOverScreen {
   constructor(ctx, canvas) {
     this.ctx = ctx;
     this.canvas = canvas;
+    this.endCounter = 0;
   }
 
   drawGameOver(fade) {
