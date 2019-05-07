@@ -1,32 +1,53 @@
 import Zombie from './zombie';
+import Player from './player';
+import Dictionary from './dictionary';
 
 class Game {
-  constructor(page, ctx, canvas, wordList, input, player, dictionary) {
+  constructor(page, ctx, canvas, wordList, input) {
     this.page = page;
     this.ctx = ctx;
     this.canvas = canvas;
     this.wordList = wordList;
     this.input = input;
-    this.player = player;
-    this.dictionary = dictionary;
+
+    this.player = new Player(this.ctx);
+    this.dictionary = new Dictionary();
+
+    this.zombies = {};
+    this.dx = 2.5;
+    this.dy = 0;
+    this.health = 100;
   }
 
-  
+  resetGame() {
+    zombies = {};
+    dx = 2.5;
+    dy = 0;
+    health = 100;
+    zombieCount = 0;
+    counter = 0;
+    round = 1;
+    alive = true;
+    killCount = 0;
+    timer = 0;
+  }
+
   spawnZombies() {
     let x = -100;
     let y = Math.floor(Math.random() * (canvas.height-150)) + 50;
     
-    for (let zomb in zombies) {
-      if (zombies[zomb].x <= 150) {
-        while (y < zombies[zomb].y + 100 && y > zombies[zomb].y - 100) {
+    for (let zomb in this.zombies) {
+      if (this.zombies[zomb].x <= 150) {
+        while (y < this.zombies[zomb].y + 100 && y > this.zombies[zomb].y - 100) {
           y = Math.floor(Math.random() * (canvas.height-150)) + 50;
         }
       }
     }
     let randomSpawn = Math.floor(Math.random() * 2.5) + (250 - round);
     if (counter % randomSpawn <= 2) {
-      zombies[`zombie${zombieCount}`] = new Zombie(ctx, dictionary.randomWord(), x, y, dy, alive);
-      zombieCount += 1;
+      this.zombies[`zombie${zombieCount}`] = new Zombie(ctx, dictionary.randomWord(), 
+                                                        x, y, this.dy, this.alive);
+      this.zombieCount += 1;
     }
   }
 
@@ -47,8 +68,8 @@ class Game {
     }
 
     spawnZombies();
-    player.drawWordList(zombies);
-    player.drawWPM(wpm);
+    this.player.drawWordList(zombies);
+    this.player.drawWPM(wpm);
       
     if (delta > interval2) {
       then = now - (delta % interval);
@@ -98,7 +119,8 @@ class Game {
               if (zombies[zomb].deadShift >= 1140) {
                 zombies[zomb].deadShift = 0;
               }
-              health -= .3
+              this.health -= .3;
+              this.player.health -= .3;
             }
           }
         } else {
@@ -128,16 +150,16 @@ class Game {
       counter += 10
     }, 500)
 
-    player.drawKillCount(killCount);
-    if (health > 0) {
-      player.drawHealth(health);
-      player.draw(playerAttack);
+    this.player.drawKillCount(killCount);
+    if (this.health > 0) {
+      this.player.drawHealth();
+      this.player.draw(playerAttack);
       if (counter - attackTimer > 50) {
         playerAttack = false;
       }
-    } else if (health <= 0) {
-      health = 0;
-      player.drawHealth(health);
+    } else if (this.health <= 0) {
+      this.health = 0;
+      this.player.drawHealth();
       clearInterval(window.intervalId);
       cancelAnimationFrame(request)
       gameOver();

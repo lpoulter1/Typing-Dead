@@ -1,10 +1,18 @@
-
 class Player {
 
   constructor(ctx) {
     this.ctx = ctx;
     this.playerImg = new Image();
     this.playerImg.src = "./public/images/player.png";
+    this.health = 100;
+  }
+
+  get health() {
+    return this.health;
+  }
+
+  set health(newHealth) {
+    this.health = newHealth;
   }
 
   draw(attack) {
@@ -23,11 +31,11 @@ class Player {
     }
   }
 
-  drawHealth(health) {
+  drawHealth() {
     this.ctx.beginPath();
       this.ctx.fillStyle = "white";
       this.ctx.font = 'bold 18px "Roboto Slab"';
-      this.ctx.fillText("Health: " + Math.floor(health).toString(), canvas.width - 100, 50);
+      this.ctx.fillText("Health: " + Math.floor(this.health).toString(), canvas.width - 100, 50);
       this.ctx.fill();
     this.ctx.closePath();
   }

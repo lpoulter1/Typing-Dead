@@ -1,6 +1,4 @@
 import Game from './game';
-import Zombie from "./zombie";
-import Player from "./player";
 import Dictionary from "./dictionary";
 import StartScreen from "./start_screen";
 import GameOverScreen from "./game_over_screen";
@@ -12,11 +10,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const input = document.getElementById('typing-form');
   const wordList = document.getElementById('word-list');
 
-  const player = new Player(ctx);
   const dictionary = new Dictionary();
   const startScreen = new StartScreen(ctx, canvas);
   const gameOverScreen = new GameOverScreen(ctx, canvas);
-  const game = new Game(page, ctx, canvas, wordList, input, player, dictionary)
+  const game = new Game(page, ctx, canvas, wordList, input)
 
   let zombies, dx, dy, health, zombieCount, counter, round, alive, killCount, timer, now, delta, attackTimer, wpm;
   let typeStart = 0;
