@@ -2,6 +2,8 @@ class StartScreen {
   constructor(ctx, canvas) {
     this.ctx = ctx;
     this.canvas = canvas;
+    this.titlePos = -60;
+    this.startCounter = 0;
   }
 
   draw() {

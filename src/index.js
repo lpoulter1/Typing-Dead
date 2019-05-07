@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
     highScores = Object.values(snapshot.val()).sort((a, b) => b.score - a.score);
   });
 
+  debugger
+
   const startScreen = new StartScreen(ctx, canvas);
   const game = new Game(page, ctx, canvas, wordList, input, scoreInput, highScores);
 
@@ -39,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function startGame(e) {
+    let { render } = game;
     if (e.keyCode === 13 || e.button === 0) {
       canvas.removeEventListener('click', startGame);
       page.removeEventListener('keydown', startGame);
@@ -46,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
       clearInterval(window.startInterval);
       clearInterval(window.overInterval);
       canvas.className = "game-screen";
-      requestAnimationFrame(renderGame)
+      requestAnimationFrame(render)
       input.disabled = false;
       input.style.display = "block";
       input.focus();

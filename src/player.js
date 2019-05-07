@@ -11,21 +11,21 @@ class Player {
     this.killCount = 0;
   }
 
-  set health(newHealth) {
-    this.health = newHealth;
-  }
+  // set health(newHealth) {
+  //   this.health = newHealth;
+  // }
 
-  set wpm(newWPM) {
-    this.wpm = newWPM;
-  }
+  // set wpm(newWPM) {
+  //   this.wpm = newWPM;
+  // }
 
-  set playerAttack(newPlayerAttack) {
-    this.playerAttack = newPlayerAttack;
-  }
+  // set playerAttack(newPlayerAttack) {
+  //   this.playerAttack = newPlayerAttack;
+  // }
 
-  set killCount(newKillCount) {
-    this.killCount = newKillCount;
-  }
+  // set killCount(newKillCount) {
+  //   this.killCount = newKillCount;
+  // }
 
   draw() {
     if (this.playerAttack) {

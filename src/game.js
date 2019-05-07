@@ -12,10 +12,10 @@ class Game {
     this.input = input;
     this.scoreInput = scoreInput;
     this.highScores = highScores
-
+    debugger
     this.player = new Player(ctx, canvas);
     this.dictionary = new Dictionary();
-    this.gameOverScreen = new GameOverScreen(page, ctx, canvas, input, scoreInput, wordList, highScores);
+    this.gameOverScreen = new GameOverScreen(page, ctx, canvas, wordList, input, scoreInput, highScores);
 
     this.zombies = {};
     this.dx = 2.5;
@@ -28,9 +28,14 @@ class Game {
     this.attackTimer;
     this.typeStart = 0;
     this.typeEnd = 0;
+    this.then = Date.now();
 
-    this.handleZombie = this.handleZombie.bind(this);
+
+    this.resetGame = this.resetGame.bind(this);
+    this.spawnZombies = this.spawnZombies.bind(this);
     this.startTimer = this.startTimer.bind(this);
+    this.handleZombie = this.handleZombie.bind(this);
+    this.render = this.render.bind(this);
   }
 
   resetGame() {
@@ -58,7 +63,7 @@ class Game {
     }
     let randomSpawn = Math.floor(Math.random() * 2.5) + (250 - this.round);
     if (this.counter % randomSpawn <= 2) {
-      this.zombies[`zombie${this.zombieCount}`] = new Zombie(ctx, dictionary.randomWord(), 
+      this.zombies[`zombie${this.zombieCount}`] = new Zombie(this.ctx, this.dictionary.randomWord(), 
                                                         x, y, this.dy, this.alive);
       this.zombieCount += 1;
     }
@@ -97,15 +102,14 @@ class Game {
     this.canvas.addEventListener('click', this.input.focus())
     this.input.addEventListener('keydown', this.handleZombie);
     this.input.addEventListener('input', this.startTimer);
-    let request = requestAnimationFrame(render);
+    let request = requestAnimationFrame(this.render);
 
     let fps = 12;
     let interval = 1000 / fps;
     let interval2 = 1000 / 300;
 
-    let then = Date.now();
     let now = Date.now();
-    let delta = now - then;
+    let delta = now - this.then;
     
     if ((this.player.killCount / (this.inputTimer / 60))) {
       this.player.wpm = (this.player.killCount / (this.inputTimer / 60)).toFixed(2);
@@ -113,13 +117,13 @@ class Game {
       this.player.wpm = 0;
     }
 
-    spawnZombies();
+    this.spawnZombies();
     this.player.drawWordList(this.zombies);
     this.player.drawWPM();
     this.player.drawKillCount();
       
     if (delta > interval2) {
-      then = now - (delta % interval);
+      this.then = now - (delta % interval);
       for (let zomb in this.zombies) {
         let { x } = this.zombies[zomb];
         if (this.zombies[zomb].alive) {
@@ -135,7 +139,7 @@ class Game {
               }
             }
             if (delta > interval) {
-              then = now - (delta % interval);
+              this.then = now - (delta % interval);
               this.zombies[zomb].x += this.dx;
               this.zombies[zomb].y += this.zombies[zomb].dy;
               this.zombies[zomb].shift += 100.75;
@@ -162,7 +166,7 @@ class Game {
           } else {
             this.zombies[zomb].drawAttack();
             if (delta > interval) {
-              then = now - (delta % interval);
+              this.then = now - (delta % interval);
               this.zombies[zomb].deadShift += 97;
               if (this.zombies[zomb].deadShift >= 1140) {
                 this.zombies[zomb].deadShift = 0;
@@ -173,7 +177,7 @@ class Game {
         } else {
           this.zombies[zomb].drawDead();
           if (delta > interval) {
-            then = now - (delta % interval);
+            this.then = now - (delta % interval);
             this.zombies[zomb].deadShift += 97;
             if (this.zombies[zomb].deadShift >= 1250) {
               this.zombies[zomb].deadShift = 1254;
@@ -183,7 +187,7 @@ class Game {
       }
     }
 
-    for (let zomb in zombies) {
+    for (let zomb in this.zombies) {
       if (this.zombies[zomb].alive) {
         this.zombies[zomb].drawText()
       }
@@ -195,7 +199,7 @@ class Game {
 
     setInterval(() => {
       this.counter += 10
-    }, 500)
+    }, 10)
 
     if (this.player.health > 0) {
       this.player.drawHealth();
@@ -208,7 +212,7 @@ class Game {
       this.player.drawHealth();
       clearInterval(window.intervalId);
       cancelAnimationFrame(request)
-      gameOverScreen.gameOver(this.player.wpm, this.player.killCount);
+      this.gameOverScreen.gameOver(this.player.wpm, this.player.killCount);
     }
   }
 }

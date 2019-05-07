@@ -1,5 +1,5 @@
 class GameOverScreen {
-  constructor(page, ctx, canvas, input, scoreInput, wordList, highScores) {
+  constructor(page, ctx, canvas, wordList, input, scoreInput, highScores) {
     this.page = page;
     this.ctx = ctx;
     this.canvas = canvas;
@@ -113,6 +113,8 @@ class GameOverScreen {
     this.killCount = killCount;
     this.wpm = wpm;
 
+    debugger
+    console.log(highScores[0])
     if (killCount > this.highScores[0].score || (this.highScores.length < 5 && killCount > 0)) {
       window.highScoreInterval = setInterval(this.highScoreAnimate, 100);
     } else {
