@@ -1,6 +1,5 @@
 import Game from './game';
 import StartScreen from "./start_screen";
-import GameOverScreen from "./game_over_screen";
 
 document.addEventListener('DOMContentLoaded', () => {
   const page = document.getElementById("page")
@@ -16,7 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   const startScreen = new StartScreen(ctx, canvas);
-  const game = new Game(page, ctx, canvas, wordList, input, scoreInput, highScores)
+  const game = new Game(page, ctx, canvas, wordList, input, scoreInput, highScores);
+
+  let titlepos = -60;
+  let startCounter = 0;
 
   function titleDrop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -50,9 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
       input.focus();
     }
   }
-  
-  let titlepos = -60;
-  let startCounter = 0;
 
   if (canvas.className === "start-screen") {
     startScreen.draw();

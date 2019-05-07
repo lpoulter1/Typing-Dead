@@ -1,7 +1,8 @@
 class Player {
 
-  constructor(ctx) {
+  constructor(ctx, canvas) {
     this.ctx = ctx;
+    this.canvas = canvas;
     this.playerImg = new Image();
     this.playerImg.src = "./public/images/player.png";
     this.health = 100;
@@ -46,16 +47,16 @@ class Player {
     this.ctx.beginPath();
       this.ctx.fillStyle = "white";
       this.ctx.font = 'bold 18px "Roboto Slab"';
-      this.ctx.fillText("Health: " + Math.floor(this.health).toString(), canvas.width - 100, 50);
+      this.ctx.fillText("Health: " + Math.floor(this.health).toString(), this.canvas.width - 100, 50);
       this.ctx.fill();
     this.ctx.closePath();
   }
 
-  drawKillCount(killCount) {
+  drawKillCount() {
     this.ctx.beginPath();
       this.ctx.fillStyle = "white";
       this.ctx.font = 'bold 18px "Roboto Slab"';
-      this.ctx.fillText("Kills: " + killCount.toString(), canvas.width - 210, 50);
+      this.ctx.fillText("Kills: " + this.killCount.toString(), this.canvas.width - 210, 50);
       this.ctx.fill();
     this.ctx.closePath();
   }

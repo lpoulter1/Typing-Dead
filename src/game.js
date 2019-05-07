@@ -13,7 +13,7 @@ class Game {
     this.scoreInput = scoreInput;
     this.highScores = highScores
 
-    this.player = new Player(ctx);
+    this.player = new Player(ctx, canvas);
     this.dictionary = new Dictionary();
     this.gameOverScreen = new GameOverScreen(page, ctx, canvas, input, scoreInput, wordList, highScores);
 
