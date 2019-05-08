@@ -3,12 +3,13 @@ class Player {
   constructor(ctx, canvas) {
     this.ctx = ctx;
     this.canvas = canvas;
-    this.playerImg = new Image();
-    this.playerImg.src = "./public/images/player.png";
     this.health = 100;
-    this.playerAttack = false;
     this.wpm;
     this.killCount = 0;
+    this.attack = false;
+
+    this.playerImg = new Image();
+    this.playerImg.src = "./public/images/player.png";
   }
 
   // set health(newHealth) {
@@ -28,7 +29,7 @@ class Player {
   // }
 
   draw() {
-    if (this.playerAttack) {
+    if (this.attack) {
       this.ctx.drawImage(this.playerImg,
                     225, 239,
                     72, 81,
@@ -43,11 +44,25 @@ class Player {
     }
   }
 
-  drawHealth() {
+  drawHealthText() {
     this.ctx.beginPath();
       this.ctx.fillStyle = "white";
       this.ctx.font = 'bold 18px "Roboto Slab"';
-      this.ctx.fillText("Health: " + Math.floor(this.health).toString(), this.canvas.width - 100, 50);
+      this.ctx.fillText("Health: ", this.canvas.width - 100, 50)
+      this.ctx.fill();
+    this.ctx.closePath();
+  }
+
+  drawHealth() {
+    this.ctx.beginPath();
+      this.drawHealthText();
+      if (this.health > 30) {
+        this.ctx.fillStyle = "#29ff6a";
+      } else {
+        this.ctx.fillStyle = "red";
+      }
+      this.ctx.font = 'bold 20px "Roboto Slab"';
+      this.ctx.fillText(Math.floor(this.health).toString(), this.canvas.width - 50, 50);
       this.ctx.fill();
     this.ctx.closePath();
   }

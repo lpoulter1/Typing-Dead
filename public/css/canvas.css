@@ -12,7 +12,7 @@ body {
   top: 51%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: url("https://i.pinimg.com/originals/3c/cd/3b/3ccd3b907039adfdd93f643d4fbdbf97.png");
+  background: url("../images/game-background.png");
   background-position-x: right;
   background-size: cover;
   z-index: 3;

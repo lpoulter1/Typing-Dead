@@ -4,18 +4,17 @@ import Dictionary from './dictionary';
 import GameOverScreen from './game_over_screen';
 
 class Game {
-  constructor(page, ctx, canvas, wordList, input, scoreInput, highScores) {
+  constructor(page, ctx, canvas, wordList, input, scoreInput) {
     this.page = page;
     this.ctx = ctx;
     this.canvas = canvas;
     this.wordList = wordList;
     this.input = input;
     this.scoreInput = scoreInput;
-    this.highScores = highScores
-    debugger
+
     this.player = new Player(ctx, canvas);
     this.dictionary = new Dictionary();
-    this.gameOverScreen = new GameOverScreen(page, ctx, canvas, wordList, input, scoreInput, highScores);
+    this.gameOverScreen = new GameOverScreen(page, ctx, canvas, wordList, input, scoreInput);
 
     this.zombies = {};
     this.dx = 2.5;
@@ -35,6 +34,7 @@ class Game {
     this.spawnZombies = this.spawnZombies.bind(this);
     this.startTimer = this.startTimer.bind(this);
     this.handleZombie = this.handleZombie.bind(this);
+    this.startGame = this.startGame.bind(this);
     this.render = this.render.bind(this);
   }
 
@@ -61,6 +61,7 @@ class Game {
         }
       }
     }
+
     let randomSpawn = Math.floor(Math.random() * 2.5) + (250 - this.round);
     if (this.counter % randomSpawn <= 2) {
       this.zombies[`zombie${this.zombieCount}`] = new Zombie(this.ctx, this.dictionary.randomWord(), 
@@ -80,8 +81,8 @@ class Game {
       let value = this.input.value.trim();
       for (let zomb in this.zombies) {
         if (value === this.zombies[zomb].word) {
-          this.attackTimer = counter;
-          this.player.playerAttack = true;
+          this.attackTimer = this.counter;
+          this.player.attack = true;
           this.player.killCount += 1;
           this.zombies[zomb].word = null;
           this.zombies[zomb].alive = false;
@@ -91,10 +92,25 @@ class Game {
       this.input.value = "";
       if (this.typeStart > 0) {
         this.typeEnd = Date.now();
-        this.timer += (this.typeEnd - this.typeStart)/1000;
+        this.inputTimer += (this.typeEnd - this.typeStart)/1000;
       }
       this.typeStart = 0;
     } 
+  }
+
+  startGame(e) {
+    if (e.keyCode === 13 || e.button === 0) {
+      this.canvas.removeEventListener('click', this.startGame);
+      this.page.removeEventListener('keydown', this.startGame);
+      this.resetGame();
+      clearInterval(window.startInterval);
+      clearInterval(window.overInterval);
+      this.canvas.className = "game-screen";
+      requestAnimationFrame(this.render)
+      this.input.disabled = false;
+      this.input.style.display = "block";
+      this.input.focus();
+    }
   }
 
   render() {
@@ -104,7 +120,7 @@ class Game {
     this.input.addEventListener('input', this.startTimer);
     let request = requestAnimationFrame(this.render);
 
-    let fps = 12;
+    let fps = 300;
     let interval = 1000 / fps;
     let interval2 = 1000 / 300;
 
@@ -204,8 +220,9 @@ class Game {
     if (this.player.health > 0) {
       this.player.drawHealth();
       this.player.draw();
-      if (this.counter - this.attackTimer > 50) {
-        this.player.playerAttack = false;
+      if (this.counter - this.attackTimer > 50000) {
+        debugger
+        this.player.attack = false;
       }
     } else if (this.player.health <= 0) {
       this.player.health = 0;

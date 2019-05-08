@@ -14,10 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
     highScores = Object.values(snapshot.val()).sort((a, b) => b.score - a.score);
   });
 
-  debugger
-
   const startScreen = new StartScreen(ctx, canvas);
-  const game = new Game(page, ctx, canvas, wordList, input, scoreInput, highScores);
+  const game = new Game(page, ctx, canvas, wordList, input, scoreInput);
 
   let titlepos = -60;
   let startCounter = 0;
@@ -58,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (canvas.className === "start-screen") {
     startScreen.draw();
+
     input.style.display = "none";
     window.startInterval = setInterval(titleDrop, 70);
   }

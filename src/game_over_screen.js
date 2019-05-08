@@ -1,12 +1,13 @@
 class GameOverScreen {
-  constructor(page, ctx, canvas, wordList, input, scoreInput, highScores) {
+  constructor(page, ctx, canvas, wordList, input, scoreInput) {
+    super();
+    
     this.page = page;
     this.ctx = ctx;
     this.canvas = canvas;
     this.input = input;
     this.scoreInput = scoreInput;
     this.wordList = wordList;
-    this.highScores = highScores;
 
     this.fade = 0;
     this.endCounter = 0;
@@ -17,9 +18,13 @@ class GameOverScreen {
     this.drawGameOver = this.drawGameOver.bind(this);
     this.drawGameOverWPM = this.drawGameOverWPM.bind(this);
     this.drawGameOverKills = this.drawGameOverKills.bind(this);
-    this.drawHighScores = this.drawHighScores.bind(this);
     this.drawRestartClick = this.drawRestartClick.bind(this);
+    this.drawHighScores = this.drawHighScores.bind(this);
     this.drawHighScoreInput = this.drawHighScoreInput.bind(this);
+    this.gameOver = this.gameOver.bind(this);
+    this.gameOverAnimate = this.gameOverAnimate.bind(this);
+    this.highScoreAnimate = this.highScoreAnimate.bind(this);
+    this.handleHighScore = this.handleHighScore.bind(this);
   }
 
   drawGameOver() {
@@ -65,6 +70,11 @@ class GameOverScreen {
   }
 
   drawHighScores() {
+    let highScores;
+    firebase.database().ref("highScores").orderByChild('score').limitToLast(5).on("value", function (snapshot) {
+      highScores = Object.values(snapshot.val()).sort((a, b) => b.score - a.score);
+    });
+
     this.ctx.beginPath();
       this.ctx.fillStyle = "lightgreen";
       this.ctx.textAlign = "center";
@@ -74,7 +84,7 @@ class GameOverScreen {
 
       let yPos = 240;
       this.ctx.font = "bold 16px 'Roboto Slab'";
-      this.highScores.forEach(highScore => {
+      highScores.forEach(highScore => {
         this.ctx.textAlign = "left";
         this.ctx.fillText("Name: " + `${highScore.name}`, (this.canvas.width/2) - 180, yPos);
         this.ctx.textAlign = "center";
@@ -112,13 +122,15 @@ class GameOverScreen {
     this.input.style.display = "none";
     this.killCount = killCount;
     this.wpm = wpm;
+    let highScores;
+    firebase.database().ref("highScores").orderByChild('score').limitToLast(5).on("value", function (snapshot) {
+      highScores = Object.values(snapshot.val()).sort((a, b) => b.score - a.score);
+    });
 
-    debugger
-    console.log(highScores[0])
-    if (killCount > this.highScores[0].score || (this.highScores.length < 5 && killCount > 0)) {
+    if (killCount > highScores[0].score || (highScores.length < 5 && killCount > 0)) {
       window.highScoreInterval = setInterval(this.highScoreAnimate, 100);
     } else {
-      this.scoreInput.removeEventListener('keydown', handleHighScore);
+      this.scoreInput.removeEventListener('keydown', this.handleHighScore);
       this.scoreInput.hidden = true;
       this.scoreInput.disabled = true;
       this.endCounter = 0;
@@ -130,7 +142,7 @@ class GameOverScreen {
 
   gameOverAnimate() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    startScreen.draw();
+    // startScreen.draw();
     this.drawGameOver();
     
     this.fade += .05;
@@ -150,7 +162,7 @@ class GameOverScreen {
     if (this.endCounter >= 17.5) {
       this.canvas.addEventListener('click', startGame)
       this.page.addEventListener('keydown', startGame)
-      if (endCounter % 10 >= 5) {
+      if (this.endCounter % 10 >= 5) {
         this.drawRestartClick();
       } else {
         null;
