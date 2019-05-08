@@ -17,8 +17,6 @@ class Game {
     this.gameOverScreen = new GameOverScreen(page, ctx, canvas, wordList, input, scoreInput);
 
     this.zombies = {};
-    this.dx = 2.5;
-    this.dy = 0;
     this.zombieCount = 0;
     this.counter = 0;
     this.round = 1;
@@ -40,8 +38,6 @@ class Game {
 
   resetGame() {
     this.zombies = {};
-    this.dx = 2.5;
-    this.dy = 0;
     this.player.health = 100;
     this.zombieCount = 0;
     this.counter = 0;
@@ -64,8 +60,8 @@ class Game {
 
     let randomSpawn = Math.floor(Math.random() * 2.5) + (250 - this.round);
     if (this.counter % randomSpawn <= 2) {
-      this.zombies[`zombie${this.zombieCount}`] = new Zombie(this.ctx, this.dictionary.randomWord(), 
-                                                        x, y, this.dy, this.alive);
+      this.zombies[`zombie${this.zombieCount}`] = new Zombie(this.ctx, this.canvas, this.dictionary.randomWord(), 
+                                                             x, y, this.alive, this.player);
       this.zombieCount += 1;
     }
   }
@@ -120,9 +116,9 @@ class Game {
     this.input.addEventListener('input', this.startTimer);
     let request = requestAnimationFrame(this.render);
 
-    let fps = 300;
+    let fps = 12;
     let interval = 1000 / fps;
-    let interval2 = 1000 / 300;
+    // let interval2 = 1000 / 300;
 
     let now = Date.now();
     let delta = now - this.then;
@@ -138,66 +134,51 @@ class Game {
     this.player.drawWPM();
     this.player.drawKillCount();
       
-    if (delta > interval2) {
-      this.then = now - (delta % interval);
-      for (let zomb in this.zombies) {
-        let { x } = this.zombies[zomb];
-        if (this.zombies[zomb].alive) {
-          if (x < this.canvas.width - 200) {
-            this.zombies[zomb].draw()
-            if (this.zombies[zomb].x > 350) {
-              if (this.zombies[zomb].y < this.canvas.height / 2) {
-                this.zombies[zomb].dy = 2;
-              } else if (this.zombies[zomb].y > this.canvas.height / 2) {
-                this.zombies[zomb].dy = -2;
-              } else {
-                this.zombies[zomb].dy = 0;
-              }
-            }
-            if (delta > interval) {
-              this.then = now - (delta % interval);
-              this.zombies[zomb].x += this.dx;
-              this.zombies[zomb].y += this.zombies[zomb].dy;
-              this.zombies[zomb].shift += 100.75;
-              if (this.zombies[zomb].shift >= 1155) {
-                this.zombies[zomb].shift = 0;
-              }
-            }
-
-            Object.values(this.zombies).forEach((zombie, idx) => {
-              if (idx < parseInt(zomb.slice(6))+3 && idx > parseInt(zomb.slice(6))) {
-                if (this.zombies[zomb].x >= 20) {
-                  if (this.zombies[zomb].y < zombie.y && this.zombies[zomb].y > zombie.y - 30) {
-                    this.zombies[zomb].dy = -1;
-                  } else if (this.zombies[zomb].y <= zombie.y + 30 && this.zombies[zomb].y >= zombie.y) {
-                    this.zombies[zomb].dy = 1;
-                  } else if (this.zombies[zomb].y === zombie.y) {
-                    this.zombies[zomb].dy = 1;
-                  } else {
-                    this.zombies[zomb].dy = 0;
-                  }
-                }
-              }
-            })
-          } else {
-            this.zombies[zomb].drawAttack();
-            if (delta > interval) {
-              this.then = now - (delta % interval);
-              this.zombies[zomb].deadShift += 97;
-              if (this.zombies[zomb].deadShift >= 1140) {
-                this.zombies[zomb].deadShift = 0;
-              }
-              this.player.health -= .3;
-            }
-          }
-        } else {
-          this.zombies[zomb].drawDead();
+    for (let zomb in this.zombies) {
+      let { x } = this.zombies[zomb];
+      if (this.zombies[zomb].alive) {
+        if (x < this.canvas.width - 200) {
+          this.zombies[zomb].draw()
+          this.zombies[zomb].converge();
           if (delta > interval) {
             this.then = now - (delta % interval);
-            this.zombies[zomb].deadShift += 97;
-            if (this.zombies[zomb].deadShift >= 1250) {
-              this.zombies[zomb].deadShift = 1254;
+            this.zombies[zomb].animateMovement();
+          }
+
+          Object.values(this.zombies).forEach((zombie, idx) => {
+            if (idx < parseInt(zomb.slice(6))+3 && idx > parseInt(zomb.slice(6))) {
+              if (this.zombies[zomb].x >= 20) {
+                if (this.zombies[zomb].y < zombie.y && this.zombies[zomb].y > zombie.y - 30) {
+                  this.zombies[zomb].dy = -1;
+                } else if (this.zombies[zomb].y <= zombie.y + 30 && this.zombies[zomb].y >= zombie.y) {
+                  this.zombies[zomb].dy = 1;
+                } else if (this.zombies[zomb].y === zombie.y) {
+                  this.zombies[zomb].dy = 1;
+                } else {
+                  this.zombies[zomb].dy = 0;
+                }
+              }
             }
+          })
+        } else {
+          // this.zombies[zomb].drawAttack();
+          // if (delta > interval) {
+          //   this.then = now - (delta % interval);
+          //   this.zombies[zomb].deadShift += 97;
+          //   if (this.zombies[zomb].deadShift >= 1140) {
+          //     this.zombies[zomb].deadShift = 0;
+          //   }
+          //   this.player.health -= .3;
+          // }
+          // this.zombies[zomb].animateAttack();
+        }
+      } else {
+        this.zombies[zomb].drawDead();
+        if (delta > interval) {
+          this.then = now - (delta % interval);
+          this.zombies[zomb].deadShift += 97;
+          if (this.zombies[zomb].deadShift >= 1250) {
+            this.zombies[zomb].deadShift = 1254;
           }
         }
       }
@@ -221,7 +202,6 @@ class Game {
       this.player.drawHealth();
       this.player.draw();
       if (this.counter - this.attackTimer > 50000) {
-        debugger
         this.player.attack = false;
       }
     } else if (this.player.health <= 0) {

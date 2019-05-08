@@ -1,7 +1,5 @@
 class GameOverScreen {
   constructor(page, ctx, canvas, wordList, input, scoreInput) {
-    super();
-    
     this.page = page;
     this.ctx = ctx;
     this.canvas = canvas;
