@@ -14,13 +14,6 @@ class Zombie {
     
     this.zombieImg = new Image();
     this.zombieImg.src = "./public/images/zombie.png";
-
-    this.draw = this.draw.bind(this);
-    this.drawDead = this.drawDead.bind(this);
-    this.drawAttack = this.drawAttack.bind(this);
-    this.drawText = this.drawText.bind(this);
-    this.animateMovement = this.animateMovement.bind(this);
-    this.converge = this.converge.bind(this);
   }
   
   draw() {
@@ -80,12 +73,18 @@ class Zombie {
   }
 
   animateAttack() {
-    this.drawAttack();
     this.deadShift += 97;
     if (this.deadShift >= 1140) {
       this.deadShift = 0;
     }
     this.player.health -= .3;
+  }
+
+  animateDead() {
+    this.deadShift += 97;
+    if (this.deadShift >= 1250) {
+      this.deadShift = 1254;
+    }
   }
 
 }
