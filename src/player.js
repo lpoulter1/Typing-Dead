@@ -12,22 +12,6 @@ class Player {
     this.playerImg.src = "./public/images/player.png";
   }
 
-  // set health(newHealth) {
-  //   this.health = newHealth;
-  // }
-
-  // set wpm(newWPM) {
-  //   this.wpm = newWPM;
-  // }
-
-  // set playerAttack(newPlayerAttack) {
-  //   this.playerAttack = newPlayerAttack;
-  // }
-
-  // set killCount(newKillCount) {
-  //   this.killCount = newKillCount;
-  // }
-
   draw() {
     if (this.attack) {
       this.ctx.drawImage(this.playerImg,

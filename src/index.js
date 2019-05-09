@@ -1,6 +1,5 @@
 import StartScreen from "./start_screen";
 import Game from './game';
-import GameOverScreen from './game_over_screen';
 
 document.addEventListener('DOMContentLoaded', () => {
   const page = document.getElementById("page")
@@ -17,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const startScreen = new StartScreen(ctx, canvas);
   const game = new Game(page, ctx, canvas, wordList, input, scoreInput);
-  const gameOverScreen = new GameOverScreen(page, ctx, canvas, wordList, input, scoreInput);
 
   let titlepos = -60;
   let startCounter = 0;
@@ -39,25 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     startScreen.drawTitle(titlepos);
   }
-
-  // function startGame(e) {
-  //   let { render } = game;
-
-  //   if (e.keyCode === 13 || e.button === 0) {
-  //     canvas.removeEventListener('click', startGame);
-  //     page.removeEventListener('keydown', startGame);
-
-  //     game.resetGame();
-  //     clearInterval(window.startInterval);
-  //     clearInterval(window.overInterval);
-  //     canvas.className = "game-screen";
-
-  //     requestAnimationFrame(render)
-  //     input.disabled = false;
-  //     input.style.display = "block";
-  //     input.focus();
-  //   }
-  // }
 
   if (canvas.className === "start-screen") {
     game.drawMenuBackground();

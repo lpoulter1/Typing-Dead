@@ -109,7 +109,6 @@ class Game {
   }
 
   separateHorde(zombieKey, currentZombie) {
-    debugger
     Object.values(this.zombies).forEach((otherZombie, idx) => {
       if (idx < parseInt(zombieKey.slice(6))+8 && idx > parseInt(zombieKey.slice(6))) {
         if (currentZombie.x >= 20 && otherZombie.alive) {
