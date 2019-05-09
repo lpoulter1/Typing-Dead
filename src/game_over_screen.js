@@ -19,7 +19,7 @@ class GameOverScreen {
     this.drawRestartClick = this.drawRestartClick.bind(this);
     this.drawHighScores = this.drawHighScores.bind(this);
     this.drawHighScoreInput = this.drawHighScoreInput.bind(this);
-    this.gameOver = this.gameOver.bind(this);
+    // this.gameOver = this.gameOver.bind(this);
     this.gameOverAnimate = this.gameOverAnimate.bind(this);
     this.highScoreAnimate = this.highScoreAnimate.bind(this);
     this.handleHighScore = this.handleHighScore.bind(this);
@@ -120,6 +120,7 @@ class GameOverScreen {
     this.input.style.display = "none";
     this.killCount = killCount;
     this.wpm = wpm;
+    
     let highScores;
     firebase.database().ref("highScores").orderByChild('score').limitToLast(5).on("value", function (snapshot) {
       highScores = Object.values(snapshot.val()).sort((a, b) => b.score - a.score);
@@ -162,8 +163,6 @@ class GameOverScreen {
       this.page.addEventListener('keydown', startGame)
       if (this.endCounter % 10 >= 5) {
         this.drawRestartClick();
-      } else {
-        null;
       }
     }
   }

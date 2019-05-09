@@ -6,14 +6,6 @@ class StartScreen {
     this.startCounter = 0;
   }
 
-  draw() {
-    this.ctx.beginPath();
-      this.ctx.rect(0, 0, canvas.width, canvas.height);
-      this.ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
-      this.ctx.fill();
-    this.ctx.closePath();
-  }
-
   drawTitle(titlePos) {
     this.ctx.beginPath();
       this.ctx.fillStyle = "rgba(255, 255, 255, 0.95)";

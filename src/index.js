@@ -1,5 +1,6 @@
-import Game from './game';
 import StartScreen from "./start_screen";
+import Game from './game';
+import GameOverScreen from './game_over_screen';
 
 document.addEventListener('DOMContentLoaded', () => {
   const page = document.getElementById("page")
@@ -16,13 +17,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const startScreen = new StartScreen(ctx, canvas);
   const game = new Game(page, ctx, canvas, wordList, input, scoreInput);
+  const gameOverScreen = new GameOverScreen(page, ctx, canvas, wordList, input, scoreInput);
+
 
   let titlepos = -60;
   let startCounter = 0;
 
   function titleDrop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    startScreen.draw();
+    game.drawMenuBackground();
     titlepos += 5;
     if (titlepos >= 140) {
       titlepos = 140;
@@ -40,13 +43,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function startGame(e) {
     let { render } = game;
+
     if (e.keyCode === 13 || e.button === 0) {
       canvas.removeEventListener('click', startGame);
       page.removeEventListener('keydown', startGame);
+
       game.resetGame();
       clearInterval(window.startInterval);
       clearInterval(window.overInterval);
       canvas.className = "game-screen";
+
       requestAnimationFrame(render)
       input.disabled = false;
       input.style.display = "block";
@@ -54,8 +60,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // function gameOver(killCount) {
+  //   canvas.removeEventListener('click', input.focus())
+  //   input.removeEventListener('keydown', game.handleZombie);
+  //   input.removeEventListener('input', game.startTimer)
+  //   wordList.innerHTML = "";
+  //   input.value = "";
+  //   input.disabled = true;
+  //   input.style.display = "none";
+
+  //   let highScores;
+  //   firebase.database().ref("highScores").orderByChild('score').limitToLast(5).on("value", function (snapshot) {
+  //     highScores = Object.values(snapshot.val()).sort((a, b) => b.score - a.score);
+  //   });
+
+  //   if (killCount > highScores[0].score || (highScores.length < 5 && killCount > 0)) {
+  //     window.highScoreInterval = setInterval(highScoreAnimate, 100);
+  //   } else {
+  //     scoreInput.removeEventListener('keydown', handleHighScore);
+  //     scoreInput.hidden = true;
+  //     scoreInput.disabled = true;
+  //     gameOverScreen.endCounter = 0;
+  //     gameOverScreen.fade = 0;
+  //     canvas.className = "game-over-screen";
+  //     window.overInterval = setInterval(gameOverAnimate, 100);
+  //   }
+  // }
+
   if (canvas.className === "start-screen") {
-    startScreen.draw();
+    game.drawMenuBackground();
 
     input.style.display = "none";
     window.startInterval = setInterval(titleDrop, 70);

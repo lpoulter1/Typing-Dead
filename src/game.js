@@ -28,6 +28,7 @@ class Game {
     this.then = Date.now();
 
 
+    this.drawMenuBackground = this.drawMenuBackground.bind(this);
     this.resetGame = this.resetGame.bind(this);
     this.startTimer = this.startTimer.bind(this);
     this.spawnZombies = this.spawnZombies.bind(this);
@@ -35,6 +36,14 @@ class Game {
     this.separateHorde = this.separateHorde.bind(this);
     this.startGame = this.startGame.bind(this);
     this.render = this.render.bind(this);
+  }
+
+  drawMenuBackground() {
+    this.ctx.beginPath();
+      this.ctx.rect(0, 0, canvas.width, canvas.height);
+      this.ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
+      this.ctx.fill();
+    this.ctx.closePath();
   }
 
   resetGame() {
@@ -57,15 +66,19 @@ class Game {
     let x = -100;
     let y = Math.floor(Math.random() * (this.canvas.height-150)) + 50;
     
-    for (let zomb in this.zombies) {
-      if (this.zombies[zomb].x <= 150) {
-        while (y < this.zombies[zomb].y + 100 && y > this.zombies[zomb].y - 100) {
-          y = Math.floor(Math.random() * (this.canvas.height-150)) + 50;
+    // for (let zomb in this.zombies) {
+      if(this.zombieCount > 0) {
+        if (this.zombies[`zombie${this.zombieCount - 1}`].x <= 150) {
+          while (y < this.zombies[`zombie${this.zombieCount - 1}`].y + 100 && 
+                 y > this.zombies[`zombie${this.zombieCount - 1}`].y - 100) {
+            y = Math.floor(Math.random() * (this.canvas.height-150)) + 50;
+          }
         }
       }
-    }
+    // }
 
-    let randomSpawn = Math.floor(Math.random() * 2.5) + (250 - this.round);
+    let randomSpawn = Math.floor(Math.random() * 5) + (250 - this.round);
+    debugger
     if (this.counter % randomSpawn <= 2) {
       this.zombies[`zombie${this.zombieCount}`] = new Zombie(this.ctx, this.canvas, this.dictionary.randomWord(), 
                                                              x, y, this.alive, this.player);
@@ -131,11 +144,12 @@ class Game {
   }
 
   render() {
+    let request = requestAnimationFrame(this.render);
+    
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.canvas.addEventListener('click', this.input.focus())
     this.input.addEventListener('keydown', this.handleZombie);
     this.input.addEventListener('input', this.startTimer);
-    let request = requestAnimationFrame(this.render);
 
     let fps = 12;
     let interval = 1000 / fps;
@@ -205,7 +219,7 @@ class Game {
       this.player.health = 0;
       this.player.drawHealth();
       clearInterval(window.intervalId);
-      cancelAnimationFrame(request)
+      cancelAnimationFrame(request);
       this.gameOverScreen.gameOver(this.player.wpm, this.player.killCount);
     }
   }
