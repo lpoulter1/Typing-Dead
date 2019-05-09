@@ -303,8 +303,8 @@ class Game {
       this.scoreInput.hidden = true;
       this.scoreInput.disabled = true;
       this.scoreInput.value = "";
-      gameOverScreen.endCounter = 0;
-      gameOverScreen.fade = 0;
+      this.gameOverScreen.endCounter = 0;
+      this.gameOverScreen.fade = 0;
       this.canvas.className = "game-over-screen";
       window.overInterval = setInterval(this.gameOverAnimate, 100);
     }
