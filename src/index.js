@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const game = new Game(page, ctx, canvas, wordList, input, scoreInput);
   const gameOverScreen = new GameOverScreen(page, ctx, canvas, wordList, input, scoreInput);
 
-
   let titlepos = -60;
   let startCounter = 0;
 
@@ -35,55 +34,28 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         null;
       }
-      canvas.addEventListener('click', startGame)
-      page.addEventListener('keydown', startGame)
+      canvas.addEventListener('click', game.startGame)
+      page.addEventListener('keydown', game.startGame)
     }
     startScreen.drawTitle(titlepos);
   }
 
-  function startGame(e) {
-    let { render } = game;
+  // function startGame(e) {
+  //   let { render } = game;
 
-    if (e.keyCode === 13 || e.button === 0) {
-      canvas.removeEventListener('click', startGame);
-      page.removeEventListener('keydown', startGame);
+  //   if (e.keyCode === 13 || e.button === 0) {
+  //     canvas.removeEventListener('click', startGame);
+  //     page.removeEventListener('keydown', startGame);
 
-      game.resetGame();
-      clearInterval(window.startInterval);
-      clearInterval(window.overInterval);
-      canvas.className = "game-screen";
+  //     game.resetGame();
+  //     clearInterval(window.startInterval);
+  //     clearInterval(window.overInterval);
+  //     canvas.className = "game-screen";
 
-      requestAnimationFrame(render)
-      input.disabled = false;
-      input.style.display = "block";
-      input.focus();
-    }
-  }
-
-  // function gameOver(killCount) {
-  //   canvas.removeEventListener('click', input.focus())
-  //   input.removeEventListener('keydown', game.handleZombie);
-  //   input.removeEventListener('input', game.startTimer)
-  //   wordList.innerHTML = "";
-  //   input.value = "";
-  //   input.disabled = true;
-  //   input.style.display = "none";
-
-  //   let highScores;
-  //   firebase.database().ref("highScores").orderByChild('score').limitToLast(5).on("value", function (snapshot) {
-  //     highScores = Object.values(snapshot.val()).sort((a, b) => b.score - a.score);
-  //   });
-
-  //   if (killCount > highScores[0].score || (highScores.length < 5 && killCount > 0)) {
-  //     window.highScoreInterval = setInterval(highScoreAnimate, 100);
-  //   } else {
-  //     scoreInput.removeEventListener('keydown', handleHighScore);
-  //     scoreInput.hidden = true;
-  //     scoreInput.disabled = true;
-  //     gameOverScreen.endCounter = 0;
-  //     gameOverScreen.fade = 0;
-  //     canvas.className = "game-over-screen";
-  //     window.overInterval = setInterval(gameOverAnimate, 100);
+  //     requestAnimationFrame(render)
+  //     input.disabled = false;
+  //     input.style.display = "block";
+  //     input.focus();
   //   }
   // }
 

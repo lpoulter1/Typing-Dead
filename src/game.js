@@ -36,6 +36,10 @@ class Game {
     this.separateHorde = this.separateHorde.bind(this);
     this.startGame = this.startGame.bind(this);
     this.render = this.render.bind(this);
+    this.gameOver = this.gameOver.bind(this);
+    this.gameOverAnimate = this.gameOverAnimate.bind(this);
+    this.handleHighScore = this.handleHighScore.bind(this);
+    this.highScoreAnimate = this.highScoreAnimate.bind(this);
   }
 
   drawMenuBackground() {
@@ -66,22 +70,18 @@ class Game {
     let x = -100;
     let y = Math.floor(Math.random() * (this.canvas.height-150)) + 50;
     
-    // for (let zomb in this.zombies) {
-      if(this.zombieCount > 0) {
-        if (this.zombies[`zombie${this.zombieCount - 1}`].x <= 150) {
-          while (y < this.zombies[`zombie${this.zombieCount - 1}`].y + 100 && 
-                 y > this.zombies[`zombie${this.zombieCount - 1}`].y - 100) {
-            y = Math.floor(Math.random() * (this.canvas.height-150)) + 50;
-          }
+    for (let zomb in this.zombies) {
+      if (this.zombies[zomb].x <= 150) {
+        while (y < this.zombies[zomb].y + 100 && y > this.zombies[zomb].y - 100) {
+          y = Math.floor(Math.random() * (this.canvas.height-150)) + 50;
         }
       }
-    // }
+    }
 
-    let randomSpawn = Math.floor(Math.random() * 5) + (250 - this.round);
-    debugger
-    if (this.counter % randomSpawn <= 2) {
+    let randomSpawn = Math.floor(Math.random() * 2.5) + (250 - this.round);
+    if (this.counter % randomSpawn < this.round) {
       this.zombies[`zombie${this.zombieCount}`] = new Zombie(this.ctx, this.canvas, this.dictionary.randomWord(), 
-                                                             x, y, this.alive, this.player);
+                                                             x, y, this.alive);
       this.zombieCount += 1;
     }
   }
@@ -108,24 +108,23 @@ class Game {
     } 
   }
 
-  separateHorde() {
-    for (let zomb in this.zombies) {
-      Object.values(this.zombies).forEach((zombie, idx) => {
-        if (idx < parseInt(zomb.slice(6))+3 && idx > parseInt(zomb.slice(6))) {
-          if (this.zombies[zomb].x >= 20) {
-            if (this.zombies[zomb].y < zombie.y && this.zombies[zomb].y > zombie.y - 30) {
-              this.zombies[zomb].dy = -1;
-            } else if (this.zombies[zomb].y <= zombie.y + 30 && this.zombies[zomb].y >= zombie.y) {
-              this.zombies[zomb].dy = 1;
-            } else if (this.zombies[zomb].y === zombie.y) {
-              this.zombies[zomb].dy = 1;
-            } else {
-              this.zombies[zomb].dy = 0;
-            }
+  separateHorde(zombieKey, currentZombie) {
+    debugger
+    Object.values(this.zombies).forEach((otherZombie, idx) => {
+      if (idx < parseInt(zombieKey.slice(6))+8 && idx > parseInt(zombieKey.slice(6))) {
+        if (currentZombie.x >= 20 && otherZombie.alive) {
+          if (currentZombie.y < otherZombie.y && currentZombie.y > otherZombie.y - 30) {
+            currentZombie.dy = -1;
+          } else if (currentZombie.y <= otherZombie.y + 30 && currentZombie.y >= otherZombie.y) {
+            currentZombie.dy = 1;
+          } else if (currentZombie.y === otherZombie.y) {
+            currentZombie.dy = 1;
+          } else {
+            currentZombie.dy = 0;
           }
         }
-      })
-    }
+      }
+    })
   }
 
   startGame(e) {
@@ -151,7 +150,7 @@ class Game {
     this.input.addEventListener('keydown', this.handleZombie);
     this.input.addEventListener('input', this.startTimer);
 
-    let fps = 12;
+    let fps = 300;
     let interval = 1000 / fps;
     let now = Date.now();
     let delta = now - this.then;
@@ -160,7 +159,7 @@ class Game {
       this.counter += 10
     }, 5)
 
-    if (this.counter % 1000 === 0) {
+    if (this.counter % 10000 === 0) {
       this.round += .5
     }
     
@@ -182,16 +181,20 @@ class Game {
         if (x < this.canvas.width - 200) {
           this.zombies[zomb].draw()
           this.zombies[zomb].converge();
+
           if (delta > interval) {
             this.then = now - (delta % interval);
             this.zombies[zomb].animateMovement();
           }
-          this.separateHorde();
+
+          this.separateHorde(zomb, this.zombies[zomb]);
         } else {
           this.zombies[zomb].drawAttack();
+
           if (delta > interval) {
             this.then = now - (delta % interval);
             this.zombies[zomb].animateAttack();
+            this.player.health -= .3;
           }
         }
       } else {
@@ -220,7 +223,91 @@ class Game {
       this.player.drawHealth();
       clearInterval(window.intervalId);
       cancelAnimationFrame(request);
-      this.gameOverScreen.gameOver(this.player.wpm, this.player.killCount);
+      this.gameOver();
+    }
+  }
+
+
+  gameOver() {
+    this.canvas.removeEventListener('click', this.input.focus())
+    this.input.removeEventListener('keydown', this.handleZombie);
+    this.input.removeEventListener('input', this.startTimer)
+    this.wordList.innerHTML = "";
+    this.input.value = "";
+    this.input.disabled = true;
+    this.input.style.display = "none";
+    
+    let highScores;
+    firebase.database().ref("highScores").orderByChild('score').limitToLast(5).on("value", function (snapshot) {
+      highScores = Object.values(snapshot.val()).sort((a, b) => b.score - a.score);
+    });
+
+    if (this.player.killCount > highScores[0].score || (highScores.length < 5 && this.player.killCount > 0)) {
+      window.highScoreInterval = setInterval(this.highScoreAnimate, 100);
+    } else {
+      this.scoreInput.removeEventListener('keydown', this.handleHighScore);
+      this.scoreInput.hidden = true;
+      this.scoreInput.disabled = true;
+      this.gameOverScreen.endCounter = 0;
+      this.gameOverScreen.fade = 0;
+      this.canvas.className = "game-over-screen";
+      window.overInterval = setInterval(this.gameOverAnimate, 100);
+    }
+  }
+
+  gameOverAnimate() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.drawMenuBackground();
+    this.gameOverScreen.drawGameOver();
+    
+    this.gameOverScreen.fade += .05;
+    this.gameOverScreen.endCounter += .5;
+    if (this.gameOverScreen.fade >= 1) {
+      this.gameOverScreen.fade = 1;
+    }
+    if (this.gameOverScreen.endCounter >= 10) {
+      this.gameOverScreen.drawGameOverWPM(this.player.wpm);
+    }
+    if (this.gameOverScreen.endCounter >= 12.5) {
+      this.gameOverScreen.drawGameOverKills(this.player.killCount);
+    }
+    if (this.gameOverScreen.endCounter >= 15) {
+      this.gameOverScreen.drawHighScores(this.player.killCount);
+    }
+    if (this.gameOverScreen.endCounter >= 17.5) {
+      this.canvas.addEventListener('click', this.startGame)
+      this.page.addEventListener('keydown', this.startGame)
+      if (this.gameOverScreen.endCounter % 10 >= 5) {
+        this.gameOverScreen.drawRestartClick();
+      }
+    }
+  }
+
+  highScoreAnimate() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.scoreInput.hidden = false;
+    this.scoreInput.disabled = false;
+    this.scoreInput.focus();
+    this.scoreInput.addEventListener('keydown', this.handleHighScore)
+    this.drawMenuBackground();
+    this.gameOverScreen.drawHighScoreInput();
+  }
+
+  handleHighScore(e) {
+    if (e.keyCode === 13) {
+      let highScoreName = this.scoreInput.value;
+
+      firebase.database().ref("highScores").push({ "name": highScoreName, "score": killCount, 'WPM': wpm })
+      clearInterval(window.highScoreInterval); 
+
+      this.scoreInput.removeEventListener('keydown', this.handleHighScore);
+      this.scoreInput.hidden = true;
+      this.scoreInput.disabled = true;
+      this.scoreInput.value = "";
+      gameOverScreen.endCounter = 0;
+      gameOverScreen.fade = 0;
+      this.canvas.className = "game-over-screen";
+      window.overInterval = setInterval(this.gameOverAnimate, 100);
     }
   }
 }

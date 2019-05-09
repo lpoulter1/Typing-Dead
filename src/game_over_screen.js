@@ -12,17 +12,6 @@ class GameOverScreen {
     this.killCount;
     this.wpm;
     this.highScoreName;
-
-    this.drawGameOver = this.drawGameOver.bind(this);
-    this.drawGameOverWPM = this.drawGameOverWPM.bind(this);
-    this.drawGameOverKills = this.drawGameOverKills.bind(this);
-    this.drawRestartClick = this.drawRestartClick.bind(this);
-    this.drawHighScores = this.drawHighScores.bind(this);
-    this.drawHighScoreInput = this.drawHighScoreInput.bind(this);
-    // this.gameOver = this.gameOver.bind(this);
-    this.gameOverAnimate = this.gameOverAnimate.bind(this);
-    this.highScoreAnimate = this.highScoreAnimate.bind(this);
-    this.handleHighScore = this.handleHighScore.bind(this);
   }
 
   drawGameOver() {
@@ -106,97 +95,6 @@ class GameOverScreen {
       this.ctx.fill();
     this.ctx.closePath();
   }
-
-
-
-
-  gameOver(wpm, killCount) {
-    this.canvas.removeEventListener('click', this.input.focus())
-    this.input.removeEventListener('keydown', this.handleZombie);
-    this.input.removeEventListener('input', this.startTimer)
-    this.wordList.innerHTML = "";
-    this.input.value = "";
-    this.input.disabled = true;
-    this.input.style.display = "none";
-    this.killCount = killCount;
-    this.wpm = wpm;
-    
-    let highScores;
-    firebase.database().ref("highScores").orderByChild('score').limitToLast(5).on("value", function (snapshot) {
-      highScores = Object.values(snapshot.val()).sort((a, b) => b.score - a.score);
-    });
-
-    if (killCount > highScores[0].score || (highScores.length < 5 && killCount > 0)) {
-      window.highScoreInterval = setInterval(this.highScoreAnimate, 100);
-    } else {
-      this.scoreInput.removeEventListener('keydown', this.handleHighScore);
-      this.scoreInput.hidden = true;
-      this.scoreInput.disabled = true;
-      this.endCounter = 0;
-      this.fade = 0;
-      this.canvas.className = "game-over-screen";
-      window.overInterval = setInterval(this.gameOverAnimate, 100);
-    }
-  }
-
-  gameOverAnimate() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    // startScreen.draw();
-    this.drawGameOver();
-    
-    this.fade += .05;
-    this.endCounter += .5;
-    if (this.fade >= 1) {
-      this.fade = 1;
-    }
-    if (this.endCounter >= 10) {
-      this.drawGameOverWPM(this.wpm);
-    }
-    if (this.endCounter >= 12.5) {
-      this.drawGameOverKills(this.killCount);
-    }
-    if (this.endCounter >= 15) {
-      this.drawHighScores(this.killCount);
-    }
-    if (this.endCounter >= 17.5) {
-      this.canvas.addEventListener('click', startGame)
-      this.page.addEventListener('keydown', startGame)
-      if (this.endCounter % 10 >= 5) {
-        this.drawRestartClick();
-      }
-    }
-  }
-
-
-  highScoreAnimate() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.scoreInput.hidden = false;
-    this.scoreInput.disabled = false;
-    this.scoreInput.focus();
-    this.scoreInput.addEventListener('keydown', this.handleHighScore)
-    startScreen.draw();
-    this.drawHighScoreInput();
-  }
-
-
-  handleHighScore(e) {
-    if (e.keyCode === 13) {
-      this.highScoreName = this.scoreInput.value;
-
-      firebase.database().ref("highScores").push({ "name": highScoreName, "score": killCount, 'WPM': wpm })
-      clearInterval(window.highScoreInterval); 
-
-      this.scoreInput.removeEventListener('keydown', this.handleHighScore);
-      this.scoreInput.hidden = true;
-      this.scoreInput.disabled = true;
-      this.scoreInput.value = "";
-      this.endCounter = 0;
-      this.fade = 0;
-      this.canvas.className = "game-over-screen";
-      window.overInterval = setInterval(this.gameOverAnimate, 100);
-    }
-  }
-
 }
 
 export default GameOverScreen;

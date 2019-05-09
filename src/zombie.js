@@ -1,5 +1,5 @@
 class Zombie {
-  constructor(ctx, canvas, word, x, y, alive, player){
+  constructor(ctx, canvas, word, x, y, alive){
     this.ctx = ctx;
     this.canvas = canvas;
     this.word = word;
@@ -10,7 +10,6 @@ class Zombie {
     this.shift = 0;
     this.deadShift = 575;
     this.alive = alive;
-    this.player = player;
     
     this.zombieImg = new Image();
     this.zombieImg.src = "./public/images/zombie.png";
@@ -44,7 +43,7 @@ class Zombie {
     this.ctx.beginPath();
       this.ctx.fillStyle = "#13ffde";
       this.ctx.font = 'bold 18px "Roboto Slab"';
-      this.ctx.fillText(this.word, this.x, this.y - 7);
+      this.ctx.fillText(this.word, this.x + 20, this.y - 7);
       this.ctx.fill();
       this.ctx.shadowBlur = 3;
       this.ctx.font = '19px "Roboto Slab"'
@@ -77,7 +76,6 @@ class Zombie {
     if (this.deadShift >= 1140) {
       this.deadShift = 0;
     }
-    this.player.health -= .3;
   }
 
   animateDead() {
