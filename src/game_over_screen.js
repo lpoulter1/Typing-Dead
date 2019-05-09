@@ -56,7 +56,7 @@ class GameOverScreen {
     this.ctx.closePath();
   }
 
-  drawHighScores() {
+  drawHighScores(killCount) {
     let highScores;
     firebase.database().ref("highScores").orderByChild('score').limitToLast(5).on("value", function (snapshot) {
       highScores = Object.values(snapshot.val()).sort((a, b) => b.score - a.score);
@@ -66,7 +66,7 @@ class GameOverScreen {
       this.ctx.fillStyle = "lightgreen";
       this.ctx.textAlign = "center";
       this.ctx.font = "bold 20px 'Roboto Slab'";
-      this.ctx.fillText("Your score was: " + `${this.killCount}`, this.canvas.width/2, 180);
+      this.ctx.fillText("Your score was: " + `${killCount}`, this.canvas.width/2, 180);
       this.ctx.fillText("High Scores: ", this.canvas.width/2, 210);
 
       let yPos = 240;
