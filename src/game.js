@@ -149,7 +149,7 @@ class Game {
     this.input.addEventListener('keydown', this.handleZombie);
     this.input.addEventListener('input', this.startTimer);
 
-    let fps = 300;
+    let fps = 12;
     let interval = 1000 / fps;
     let now = Date.now();
     let delta = now - this.then;
