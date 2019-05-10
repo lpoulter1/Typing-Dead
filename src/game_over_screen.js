@@ -1,17 +1,10 @@
 class GameOverScreen {
   constructor(page, ctx, canvas, wordList, input, scoreInput) {
-    this.page = page;
     this.ctx = ctx;
     this.canvas = canvas;
-    this.input = input;
-    this.scoreInput = scoreInput;
-    this.wordList = wordList;
 
     this.fade = 0;
     this.endCounter = 0;
-    this.killCount;
-    this.wpm;
-    this.highScoreName;
   }
 
   drawGameOver() {
@@ -19,7 +12,7 @@ class GameOverScreen {
       this.ctx.fillStyle = `rgba(255, 0, 0, ${this.fade}`;
       this.ctx.font = 'bold 72px "Roboto Slab"';
       this.ctx.textAlign = "center";
-      this.ctx.fillText("Game Over", (canvas.width / 2), 110);
+      this.ctx.fillText("Game Over", (this.canvas.width / 2), 110);
       this.ctx.fill();
     this.ctx.closePath();
   }
@@ -29,9 +22,9 @@ class GameOverScreen {
       this.ctx.fillStyle = "white";
       this.ctx.font = 'bold 20px "Roboto Slab"';
       if (wpm) {
-        this.ctx.fillText("WPM: " + wpm, (canvas.width / 2) - 120, 150);
+        this.ctx.fillText("WPM: " + wpm, (this.canvas.width / 2) - 120, 150);
       } else {
-        this.ctx.fillText("WPM: 0", (canvas.width / 2) - 120, 150);
+        this.ctx.fillText("WPM: 0", (this.canvas.width / 2) - 120, 150);
       }
       this.ctx.fill();
     this.ctx.closePath();
@@ -41,7 +34,7 @@ class GameOverScreen {
     this.ctx.beginPath();
       this.ctx.fillStyle = "white";
       this.ctx.font = 'bold 20px "Roboto Slab"';
-      this.ctx.fillText("Kills: " + `${killCount}`, (canvas.width / 2)+110, 150);
+      this.ctx.fillText("Kills: " + `${killCount}`, (this.canvas.width / 2)+110, 150);
       this.ctx.fill();
     this.ctx.closePath();
   }
@@ -51,7 +44,7 @@ class GameOverScreen {
       this.ctx.fillStyle = "lightgreen";
       this.ctx.textAlign = "center"; 
       this.ctx.font = 'bold 30px "Roboto Slab"';
-      this.ctx.fillText("Click or Press Enter to Restart", (canvas.width / 2), 375);
+      this.ctx.fillText("Click or Press Enter to Restart", (this.canvas.width / 2), 375);
       this.ctx.fill();
     this.ctx.closePath();
   }

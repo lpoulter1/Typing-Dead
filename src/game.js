@@ -14,7 +14,7 @@ class Game {
 
     this.player = new Player(ctx, canvas);
     this.dictionary = new Dictionary();
-    this.gameOverScreen = new GameOverScreen(page, ctx, canvas, wordList, input, scoreInput);
+    this.gameOverScreen = new GameOverScreen(ctx, canvas);
 
     this.zombies = {};
     this.zombieCount = 0;
