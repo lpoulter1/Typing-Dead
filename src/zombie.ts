@@ -1,5 +1,4 @@
 import zombieImageUrl from "./images/zombie.png";
-
 class Zombie {
   ctx: any;
   canvas: any;

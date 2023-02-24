@@ -1,7 +1,16 @@
 import playerImageUrl from "./images/player.png";
+import type Zombie from "./zombie";
 
 class Player {
-  constructor(ctx, canvas) {
+  ctx: CanvasRenderingContext2D;
+  canvas: HTMLCanvasElement;
+  health: number;
+  wpm: any;
+  killCount: number;
+  attack: boolean;
+  playerImg: HTMLImageElement;
+
+  constructor(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
     this.ctx = ctx;
     this.canvas = canvas;
     this.health = 100;
@@ -21,8 +30,8 @@ class Player {
         239,
         72,
         81,
-        canvas.width - 150,
-        canvas.height / 2,
+        this.canvas.width - 150,
+        this.canvas.height / 2,
         72,
         81
       );
@@ -33,8 +42,8 @@ class Player {
         240,
         72,
         81,
-        canvas.width - 150,
-        canvas.height / 2,
+        this.canvas.width - 150,
+        this.canvas.height / 2,
         72,
         81
       );
@@ -81,13 +90,17 @@ class Player {
     this.ctx.closePath();
   }
 
-  drawWordList(zombies) {
-    let list = document.getElementById("word-list");
+  drawWordList(zombies: Zombie[]) {
+    let list = document.getElementById("word-list") as HTMLUListElement;
     list.innerHTML = "";
 
     Object.values(zombies).forEach((zombie) => {
       if (zombie.x >= 350 && zombie.alive) {
-        if (zombie.word.length > 0 && list.children.length < 10) {
+        if (
+          zombie.word &&
+          zombie.word.length > 0 &&
+          list.children.length < 10
+        ) {
           list.insertAdjacentHTML("beforeend", `<li>${zombie.word}</li>`);
         }
       }
