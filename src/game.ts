@@ -4,6 +4,7 @@ import Zombie from "./zombie";
 import Player from "./player";
 import Dictionary from "./dictionary";
 import GameOverScreen from "./game_over_screen";
+import type { Score } from "./types";
 
 declare let window: CustomWindow;
 
@@ -281,6 +282,20 @@ class Game {
     }
   }
 
+  isHighScore(highScores: Score[]) {
+    const topFiveScores = highScores.splice(0, 5);
+
+    if (!topFiveScores.at(-1)) {
+      return true;
+    }
+    if (topFiveScores.length < 5) {
+      return true;
+    }
+    if (this.player.killCount > (topFiveScores.at(-1) as Score).score) {
+      return true;
+    }
+  }
+
   gameOver() {
     this.canvas.removeEventListener("click", () => this.input.focus());
     this.input.removeEventListener("keydown", this.handleZombie);
@@ -290,13 +305,13 @@ class Game {
     this.input.disabled = true;
     this.input.style.display = "none";
 
-    const highScores = JSON.parse(localStorage.getItem("highScores") || "[]");
+    let highScores: Score[] = JSON.parse(
+      localStorage.getItem("highScores") || "[]"
+    );
 
-    if (
-      highScores === null ||
-      this.player.killCount > highScores[0].score ||
-      (highScores.length < 5 && this.player.killCount > 0)
-    ) {
+    const isHighScore = this.isHighScore(highScores);
+
+    if (isHighScore) {
       window.highScoreInterval = setInterval(this.highScoreAnimate, 100);
     } else {
       this.scoreInput.removeEventListener("keydown", this.handleHighScore);
@@ -351,21 +366,20 @@ class Game {
     if (e.key === "Enter") {
       let highScoreName = this.scoreInput.value;
 
-      const currentHighScores = JSON.parse(
+      const currentHighScores: Score[] = JSON.parse(
         localStorage.getItem("highScores") || "[]"
       );
-      localStorage.setItem(
-        "highScores",
-        JSON.stringify([
-          ...currentHighScores,
-          {
-            name: highScoreName,
-            score: this.player.killCount,
-            wpm: this.player.wpm,
-          },
-          currentHighScores,
-        ])
-      );
+
+      const newHighScores: Score[] = [
+        ...currentHighScores,
+        {
+          name: highScoreName,
+          score: this.player.killCount,
+          wpm: this.player.wpm,
+        },
+      ];
+
+      localStorage.setItem("highScores", JSON.stringify(newHighScores));
 
       clearInterval(window.highScoreInterval);
 

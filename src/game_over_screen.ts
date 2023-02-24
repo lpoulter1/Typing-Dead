@@ -1,3 +1,5 @@
+import type { Score } from "./types";
+
 class GameOverScreen {
   ctx: CanvasRenderingContext2D;
   canvas: HTMLCanvasElement;
@@ -64,7 +66,7 @@ class GameOverScreen {
 
   drawHighScores(killCount: any) {
     const highScoresString = localStorage.getItem("highScores");
-    const highScores = JSON.parse(highScoresString || "[]");
+    const highScores: Score[] = JSON.parse(highScoresString || "[]");
 
     this.ctx.beginPath();
     this.ctx.fillStyle = "lightgreen";
@@ -79,7 +81,7 @@ class GameOverScreen {
 
     let yPos = 240;
     this.ctx.font = "bold 16px 'Roboto Slab'";
-    highScores.forEach((highScore: { name: any; score: any; WPM: any }) => {
+    highScores.forEach((highScore) => {
       this.ctx.textAlign = "left";
       this.ctx.fillText(
         "Name: " + `${highScore.name}`,
@@ -94,7 +96,7 @@ class GameOverScreen {
       );
       this.ctx.textAlign = "left";
       this.ctx.fillText(
-        "WPM: " + `${highScore.WPM}`,
+        "WPM: " + `${highScore.wpm}`,
         this.canvas.width / 2 + 80,
         yPos
       );
