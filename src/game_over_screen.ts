@@ -1,5 +1,10 @@
 class GameOverScreen {
-  constructor(ctx, canvas) {
+  ctx: CanvasRenderingContext2D;
+  canvas: HTMLCanvasElement;
+  fade: number;
+  endCounter: number;
+
+  constructor(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
     this.ctx = ctx;
     this.canvas = canvas;
 
@@ -17,7 +22,7 @@ class GameOverScreen {
     this.ctx.closePath();
   }
 
-  drawGameOverWPM(wpm) {
+  drawGameOverWPM(wpm: string) {
     this.ctx.beginPath();
     this.ctx.fillStyle = "white";
     this.ctx.font = 'bold 20px "Roboto Slab"';
@@ -30,7 +35,7 @@ class GameOverScreen {
     this.ctx.closePath();
   }
 
-  drawGameOverKills(killCount) {
+  drawGameOverKills(killCount: any) {
     this.ctx.beginPath();
     this.ctx.fillStyle = "white";
     this.ctx.font = 'bold 20px "Roboto Slab"';
@@ -57,8 +62,10 @@ class GameOverScreen {
     this.ctx.closePath();
   }
 
-  drawHighScores(killCount) {
-    const highScores = JSON.parse(localStorage.getItem("highScores")) || [];
+  drawHighScores(killCount: any) {
+    const highScoresString = localStorage.getItem("highScores");
+    const highScores: [] = JSON.parse(highScoresString || "[]");
+
     this.ctx.beginPath();
     this.ctx.fillStyle = "lightgreen";
     this.ctx.textAlign = "center";
@@ -72,7 +79,7 @@ class GameOverScreen {
 
     let yPos = 240;
     this.ctx.font = "bold 16px 'Roboto Slab'";
-    highScores.forEach((highScore) => {
+    highScores.forEach((highScore: { name: any; score: any; WPM: any }) => {
       this.ctx.textAlign = "left";
       this.ctx.fillText(
         "Name: " + `${highScore.name}`,
