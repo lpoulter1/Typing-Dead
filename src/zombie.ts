@@ -1,7 +1,19 @@
 import zombieImageUrl from './images/zombie.png'
 
 class Zombie {
-  constructor(ctx, canvas, word, x, y, alive){
+  ctx: any;
+  canvas: any;
+  word: string;
+  x: number;
+  y: number;
+  dx: number;
+  dy: number;
+  shift: number;
+  deadShift: number;
+  alive: boolean;
+  zombieImg: HTMLImageElement;
+
+  constructor(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, word: string, x: number, y: number, alive: boolean){
     this.ctx = ctx;
     this.canvas = canvas;
     this.word = word;
