@@ -49,3 +49,5 @@ Upon reaching a high score (number of kills), you are greeted with this screen t
 Doing so will include your name in the high score list on the game over screen, which shows the top 5 high scorers' names, kill counts, and words per minute.
 
 <img src="https://i.imgur.com/YgvFB6Q.png" width="500"/>
+
+> Orignal game by Brian Lee https://ibltsandwich.github.io/
