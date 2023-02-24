@@ -58,7 +58,7 @@ class GameOverScreen {
   }
 
   drawHighScores(killCount) {
-    const highScores = JSON.parse(localStorage.getItem("highScores"));
+    const highScores = JSON.parse(localStorage.getItem("highScores")) || [];
     this.ctx.beginPath();
     this.ctx.fillStyle = "lightgreen";
     this.ctx.textAlign = "center";

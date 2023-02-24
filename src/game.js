@@ -258,6 +258,7 @@ class Game {
     const highScores = JSON.parse(localStorage.getItem("highScores"));
 
     if (
+      highScores === null ||
       this.player.killCount > highScores[0].score ||
       (highScores.length < 5 && this.player.killCount > 0)
     ) {
@@ -315,12 +316,12 @@ class Game {
     if (e.keyCode === 13) {
       let highScoreName = this.scoreInput.value;
 
-      const currentHighScores = JSON.parse(localStorage.getItem("highScores"));
+      const currentHighScores = JSON.parse(localStorage.getItem("highScores")) || [];
       localStorage.setItem(
         "highScores",
         JSON.stringify([
           ...currentHighScores,
-          { name: highScoreName, score: this.player.killCount, wpm: wpm },
+          { name: highScoreName, score: this.player.killCount, wpm: this.player.wpm },
           currentHighScores,
         ])
       );
