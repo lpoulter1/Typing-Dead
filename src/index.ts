@@ -31,10 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
       startCounter += 0.5;
       if (startCounter % 10 <= 6) {
         startScreen.drawStartClick();
-      } else {
-        null;
-      }
-    
+      }    
     }
     startScreen.drawTitle(titlepos);
   }
