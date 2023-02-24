@@ -1,4 +1,4 @@
-import zombieImageUrl from './images/zombie.png'
+import zombieImageUrl from "./images/zombie.png";
 
 class Zombie {
   ctx: any;
@@ -13,54 +13,79 @@ class Zombie {
   alive: boolean;
   zombieImg: HTMLImageElement;
 
-  constructor(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, word: string, x: number, y: number, alive: boolean){
+  constructor(
+    ctx: CanvasRenderingContext2D,
+    canvas: HTMLCanvasElement,
+    word: string,
+    x: number,
+    y: number,
+    alive: boolean
+  ) {
     this.ctx = ctx;
     this.canvas = canvas;
     this.word = word;
     this.x = x;
     this.y = y;
-    this.dx = 2.5
+    this.dx = 2.5;
     this.dy = 0;
     this.shift = 0;
     this.deadShift = 575;
     this.alive = alive;
-    
+
     this.zombieImg = new Image();
     this.zombieImg.src = zombieImageUrl;
   }
-  
+
   draw() {
-    this.ctx.drawImage(this.zombieImg, 
-                        this.shift, 88, 
-                        50, 90, 
-                        this.x, this.y,
-                        50, 90);
+    this.ctx.drawImage(
+      this.zombieImg,
+      this.shift,
+      88,
+      50,
+      90,
+      this.x,
+      this.y,
+      50,
+      90
+    );
   }
 
   drawDead() {
-    this.ctx.drawImage(this.zombieImg,
-                        this.deadShift, 270,
-                        50, 90,
-                        this.x, this.y,
-                        50, 90);
+    this.ctx.drawImage(
+      this.zombieImg,
+      this.deadShift,
+      270,
+      50,
+      90,
+      this.x,
+      this.y,
+      50,
+      90
+    );
   }
 
   drawAttack() {
-    this.ctx.drawImage(this.zombieImg,
-                        this.deadShift, 178,
-                        75, 90,
-                        this.x, this.y,
-                        55, 90);
+    this.ctx.drawImage(
+      this.zombieImg,
+      this.deadShift,
+      178,
+      75,
+      90,
+      this.x,
+      this.y,
+      55,
+      90
+    );
   }
 
   drawText() {
     this.ctx.beginPath();
-      this.ctx.fillStyle = "#13ffde";
-      this.ctx.font = 'bold 18px "Roboto Slab"';
-      this.ctx.fillText(this.word, this.x + 20, this.y - 7);
-      this.ctx.fill();
-      this.ctx.shadowBlur = 3;
-      this.ctx.font = '19px "Roboto Slab"'
+    this.ctx.fillStyle = "#13ffde";
+    this.ctx.font = 'bold 18px "Roboto Slab"';
+    this.ctx.fillText(this.word, this.x + 20, this.y - 7);
+    this.ctx.fill();
+    this.ctx.shadowBlur = 3;
+    this.ctx.font = '19px "Roboto Slab"';
     this.ctx.closePath();
   }
 
@@ -98,7 +123,6 @@ class Zombie {
       this.deadShift = 1254;
     }
   }
-
 }
 
 export default Zombie;

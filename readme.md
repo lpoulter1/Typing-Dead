@@ -1,26 +1,27 @@
 # Typing Dead
 
-
-## Development 
+## Development
 
 This project uses pnpm and vite.
 
 ## Getting started
+
 ```
 pnpm
 pnpm dev
 ```
 
 ## Gameplay
+
 ### [Live Link](https://ibltsandwich.github.io/Typing-Dead/)
 
 ## MVPs
 
 Typing Dead is a typing game where waves of zombies spawn in from the left and have words attached to them, as the player character defends him/herself from the right. As words are properly typed by the player, the zombie with that word will die, keeping the player safe from harm.
 
- - Players will see zombies shuffle in from the left
- - Players will be able to type to kill zombies
- - Zombies should continuously spawn until the round ends or until the player loses
+- Players will see zombies shuffle in from the left
+- Players will be able to type to kill zombies
+- Zombies should continuously spawn until the round ends or until the player loses
 
 ## Architecture and Technologies
 
@@ -30,7 +31,7 @@ Javascript, HTML Canvas
 
 Zombies spawn in continuously from the left side of the screen, just outside the canvas's view limit.
 Each zombie is dynamically generated and randomly spawned based on a game timer running in the background.
-As time goes on, a round number increases and this round number determines the frequency of zombie spawns.  
+As time goes on, a round number increases and this round number determines the frequency of zombie spawns.
 
 Upon creation, each zombie is given an attached word and an 'alive' toggle. When the word attached to that zombie is typed correctly, the zombie will enter a death animation and it's 'alive' toggle will be changed to 'dead'.
 In the case of multiple zombies with the same words, the one closest to the player character will die.
@@ -38,7 +39,6 @@ In the case of multiple zombies with the same words, the one closest to the play
 <img src="https://i.imgur.com/RtTZOoI.png" width="600">
 
 Zombies start huddling towards the player when they get too close. Unfortunately, this means words can become hard to distinguish as they overlap. A list to the right side of the player lists the top 10 closest zombies that have crossed the halfway point and the words attached to them.
-
 
 ## Game Over
 

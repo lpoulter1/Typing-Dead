@@ -86,7 +86,7 @@ body {
 .links a {
   text-decoration: none;
   color: black;
-  font-family: 'Roboto Slab', serif;
+  font-family: "Roboto Slab", serif;
 }
 
 .links a:hover {
@@ -94,7 +94,7 @@ body {
 }
 
 .created-by {
-  font-family: 'Roboto Slab', serif;
+  font-family: "Roboto Slab", serif;
   position: absolute;
   bottom: 7%;
   left: 50%;
@@ -120,7 +120,7 @@ body {
 }
 
 .game-title {
-  font-family: 'Roboto Slab';
+  font-family: "Roboto Slab";
   text-align: center;
   font-size: 3.5em;
   position: relative;
