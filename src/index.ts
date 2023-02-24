@@ -17,7 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const startScreen = new StartScreen(ctx, canvas);
   const game = new Game(page, ctx, canvas, wordList, input, scoreInput);
-
+  canvas.addEventListener("click", game.startGame);
+  page.addEventListener("keydown", game.startGame);
   let titlepos = -60;
   let startCounter = 0;
 
@@ -33,8 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         null;
       }
-      canvas.addEventListener("click", game.startGame);
-      page.addEventListener("keydown", game.startGame);
+    
     }
     startScreen.drawTitle(titlepos);
   }
