@@ -91,14 +91,13 @@ class Game {
   }
 
   startTimer(e: Event) {
-    // @ts-ignore
+    // @ts-ignore input event does not seem to work
     if (this.typeStart === 0 && e.target?.value != " ") {
       this.typeStart = Date.now();
     }
   }
 
   spawnZombies() {
-    console.log("this", this.zombies);
     let x = -100;
     let y = Math.floor(Math.random() * (this.canvas.height - 150)) + 50;
 
