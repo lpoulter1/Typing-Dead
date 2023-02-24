@@ -1,5 +1,17 @@
 # Typing Dead
 
+
+## Development 
+
+This project uses pnpm and vite.
+
+## Getting started
+```
+pnpm
+pnpm dev
+```
+
+## Gameplay
 ### [Live Link](https://ibltsandwich.github.io/Typing-Dead/)
 
 ## MVPs
