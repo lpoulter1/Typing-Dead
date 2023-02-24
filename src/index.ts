@@ -1,15 +1,21 @@
+import { CustomWindow } from "./custom.window";
+// @ts-ignore
 import StartScreen from "./start_screen";
+// @ts-ignore
 import Game from "./game";
 
+declare let window: CustomWindow;
+
 document.addEventListener("DOMContentLoaded", () => {
-  const page = document.getElementById("page");
-  const canvas = document.getElementById("canvas");
-  if (canvas == null) throw new Error("Could not get context");
-  const ctx = canvas.getContext("2d");
-  if (ctx == null) throw new Error("Could not get context");
-  const input = document.getElementById("typing-form");
-  const wordList = document.getElementById("word-list");
-  const scoreInput = document.getElementById("high-score-form");
+  const page = document.getElementById("page") as HTMLBodyElement;
+  const canvas = document.getElementById("canvas") as HTMLCanvasElement;
+  const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+
+  const input = document.getElementById("typing-form") as HTMLInputElement;
+  const wordList = document.getElementById("word-list") as HTMLUListElement;
+  const scoreInput = document.getElementById(
+    "high-score-form"
+  ) as HTMLInputElement;
 
   const startScreen = new StartScreen(ctx, canvas);
   const game = new Game(page, ctx, canvas, wordList, input, scoreInput);
@@ -39,6 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
     game.drawMenuBackground();
 
     input.style.display = "none";
+
     window.startInterval = setInterval(titleDrop, 70);
   }
 });
