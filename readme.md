@@ -24,7 +24,7 @@ Typing Dead is a typing game where waves of zombies spawn in from the left and h
 
 ## Architecture and Technologies
 
-Javascript, HTML Canvas, and Google Firebase
+Javascript, HTML Canvas
 
 ## Gameplay
 

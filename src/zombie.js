@@ -1,3 +1,5 @@
+import zombieImageUrl from './images/zombie.png'
+
 class Zombie {
   constructor(ctx, canvas, word, x, y, alive){
     this.ctx = ctx;
@@ -12,7 +14,7 @@ class Zombie {
     this.alive = alive;
     
     this.zombieImg = new Image();
-    this.zombieImg.src = "./public/images/zombie.png";
+    this.zombieImg.src = zombieImageUrl;
   }
   
   draw() {

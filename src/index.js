@@ -9,11 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const wordList = document.getElementById('word-list');
   const scoreInput = document.getElementById('high-score-form');
 
-  let highScores;
-  firebase.database().ref("highScores").orderByChild('score').limitToLast(5).on("value", function (snapshot) {
-    highScores = Object.values(snapshot.val()).sort((a, b) => b.score - a.score);
-  });
-
   const startScreen = new StartScreen(ctx, canvas);
   const game = new Game(page, ctx, canvas, wordList, input, scoreInput);
 

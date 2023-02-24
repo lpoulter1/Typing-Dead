@@ -1,3 +1,5 @@
+import playerImageUrl from './images/player.png'
+
 class Player {
 
   constructor(ctx, canvas) {
@@ -9,7 +11,7 @@ class Player {
     this.attack = false;
 
     this.playerImg = new Image();
-    this.playerImg.src = "./public/images/player.png";
+    this.playerImg.src = playerImageUrl;
   }
 
   draw() {
