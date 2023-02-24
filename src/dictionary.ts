@@ -1,5 +1,6 @@
 
 class Dictionary {
+  words: string[];
 
   constructor() {
     this.words = ["ability", "able", "about", "above", "accept", "according", "account", "across",
