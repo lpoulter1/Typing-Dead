@@ -1,7 +1,5 @@
 import { CustomWindow } from "./custom.window";
-// @ts-ignore
 import StartScreen from "./start_screen";
-// @ts-ignore
 import Game from "./game";
 
 declare let window: CustomWindow;

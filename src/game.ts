@@ -1,6 +1,5 @@
 import { CustomWindow } from "./custom.window";
 import Zombie from "./zombie";
-// @ts-ignore
 import Player from "./player";
 import Dictionary from "./dictionary";
 import GameOverScreen from "./game_over_screen";
