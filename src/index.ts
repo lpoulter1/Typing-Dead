@@ -19,21 +19,27 @@ document.addEventListener("DOMContentLoaded", () => {
   const game = new Game(page, ctx, canvas, wordList, input, scoreInput);
   canvas.addEventListener("click", game.startGame);
   page.addEventListener("keydown", game.startGame);
-  let titlepos = -60;
-  let startCounter = 0;
 
-  function titleDrop() {
+  let titlepos = -60;
+  let lastTimestamp = 0;
+  function titleDrop(timestamp: number) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     game.drawMenuBackground();
-    titlepos += 5;
-    if (titlepos >= 140) {
-      titlepos = 140;
-      startCounter += 0.5;
-      if (startCounter % 10 <= 6) {
-        startScreen.drawStartClick();
-      }    
-    }
     startScreen.drawTitle(titlepos);
+    const hideStartClickDelay = 500;
+    const showStartClickDelay = 1500;
+    if (titlepos >= 140) {
+      if (timestamp - lastTimestamp > hideStartClickDelay) {
+        startScreen.drawStartClick();
+        if (timestamp - lastTimestamp > showStartClickDelay) {
+          lastTimestamp = timestamp;
+        }
+      }
+    } else {
+      titlepos += 5;
+    }
+
+    requestAnimationFrame(titleDrop);
   }
 
   if (canvas.className === "start-screen") {
@@ -41,6 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     input.style.display = "none";
 
-    window.startInterval = setInterval(titleDrop, 70);
+    requestAnimationFrame(titleDrop);
   }
 });
