@@ -1,10 +1,41 @@
+import { CustomWindow } from "./custom.window";
 import Zombie from "./zombie";
+// @ts-ignore
 import Player from "./player";
 import Dictionary from "./dictionary";
 import GameOverScreen from "./game_over_screen";
 
+declare let window: CustomWindow;
+
 class Game {
-  constructor(page, ctx, canvas, wordList, input, scoreInput) {
+  page: HTMLBodyElement;
+  ctx: CanvasRenderingContext2D;
+  canvas: HTMLCanvasElement;
+  wordList: HTMLUListElement;
+  input: HTMLInputElement;
+  scoreInput: HTMLInputElement;
+  player: any;
+  dictionary: Dictionary;
+  gameOverScreen: GameOverScreen;
+  zombies: { [id: string]: Zombie };
+  zombieCount: number;
+  counter: number;
+  round: number;
+  alive: boolean;
+  inputTimer: number;
+  attackTimer: any;
+  typeStart: number;
+  typeEnd: number;
+  then: number;
+
+  constructor(
+    page: HTMLBodyElement,
+    ctx: CanvasRenderingContext2D,
+    canvas: HTMLCanvasElement,
+    wordList: HTMLUListElement,
+    input: HTMLInputElement,
+    scoreInput: HTMLInputElement
+  ) {
     this.page = page;
     this.ctx = ctx;
     this.canvas = canvas;
@@ -43,7 +74,7 @@ class Game {
 
   drawMenuBackground() {
     this.ctx.beginPath();
-    this.ctx.rect(0, 0, canvas.width, canvas.height);
+    this.ctx.rect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
     this.ctx.fill();
     this.ctx.closePath();
@@ -59,13 +90,15 @@ class Game {
     this.player.killCount = 0;
   }
 
-  startTimer(e) {
-    if (this.typeStart === 0 && e.target.value != " ") {
+  startTimer(e: Event) {
+    // @ts-ignore
+    if (this.typeStart === 0 && e.target?.value != " ") {
       this.typeStart = Date.now();
     }
   }
 
   spawnZombies() {
+    console.log("this", this.zombies);
     let x = -100;
     let y = Math.floor(Math.random() * (this.canvas.height - 150)) + 50;
 
@@ -94,8 +127,8 @@ class Game {
     }
   }
 
-  handleZombie(e) {
-    if (e.keyCode === 32 || e.keyCode === 13) {
+  handleZombie(e: KeyboardEvent) {
+    if (e.key === "32" || e.key === "Enter") {
       let value = this.input.value.trim();
       for (let zomb in this.zombies) {
         if (value === this.zombies[zomb].word) {
@@ -116,7 +149,7 @@ class Game {
     }
   }
 
-  separateHorde(zombieKey, currentZombie) {
+  separateHorde(zombieKey: string, currentZombie: Zombie) {
     Object.values(this.zombies).forEach((otherZombie, idx) => {
       if (
         idx < parseInt(zombieKey.slice(6)) + 8 &&
@@ -143,8 +176,11 @@ class Game {
     });
   }
 
-  startGame(e) {
-    if (e.keyCode === 13 || e.button === 0) {
+  startGame(e: KeyboardEvent | MouseEvent) {
+    if (
+      (e instanceof MouseEvent && e.button === 0) ||
+      (e instanceof KeyboardEvent && e.key === "Enter")
+    ) {
       this.canvas.removeEventListener("click", this.startGame);
       this.page.removeEventListener("keydown", this.startGame);
       this.resetGame();
@@ -162,7 +198,7 @@ class Game {
     let request = requestAnimationFrame(this.render);
 
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.canvas.addEventListener("click", this.input.focus());
+    this.canvas.addEventListener("click", () => this.input.focus());
     this.input.addEventListener("keydown", this.handleZombie);
     this.input.addEventListener("input", this.startTimer);
 
@@ -247,7 +283,7 @@ class Game {
   }
 
   gameOver() {
-    this.canvas.removeEventListener("click", this.input.focus());
+    this.canvas.removeEventListener("click", () => this.input.focus());
     this.input.removeEventListener("keydown", this.handleZombie);
     this.input.removeEventListener("input", this.startTimer);
     this.wordList.innerHTML = "";
@@ -255,7 +291,7 @@ class Game {
     this.input.disabled = true;
     this.input.style.display = "none";
 
-    const highScores = JSON.parse(localStorage.getItem("highScores"));
+    const highScores = JSON.parse(localStorage.getItem("highScores") || "[]");
 
     if (
       highScores === null ||
@@ -312,12 +348,13 @@ class Game {
     this.gameOverScreen.drawHighScoreInput();
   }
 
-  handleHighScore(e) {
-    if (e.keyCode === 13) {
+  handleHighScore(e: KeyboardEvent) {
+    if (e.key === "Enter") {
       let highScoreName = this.scoreInput.value;
 
-      const currentHighScores =
-        JSON.parse(localStorage.getItem("highScores")) || [];
+      const currentHighScores = JSON.parse(
+        localStorage.getItem("highScores") || "[]"
+      );
       localStorage.setItem(
         "highScores",
         JSON.stringify([

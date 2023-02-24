@@ -3,7 +3,7 @@ import zombieImageUrl from "./images/zombie.png";
 class Zombie {
   ctx: any;
   canvas: any;
-  word: string;
+  word: string | null;
   x: number;
   y: number;
   dx: number;
